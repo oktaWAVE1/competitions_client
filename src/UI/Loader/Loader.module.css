@@ -1,0 +1,25 @@
+.loader {
+    margin: 50px 0;
+    display: flex;
+    justify-content: center;
+
+}
+.loaderCircle {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    border: 3px dashed #800080;
+    animation: rotate 1.5s infinite;
+    animation-direction: alternate;
+
+
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg) scale(1);
+    } to {
+              transform: rotate(360deg) scale(1.4);
+          }
+
+}

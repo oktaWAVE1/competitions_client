@@ -1,0 +1,19 @@
+.footer {
+    margin-top: auto;
+    padding: 20px 20px 20px 20px;
+    text-align: center;
+    color: #FFFFFF;
+    background: var(--main-theme-color);
+    box-shadow: 0px -2px 6px rgba(0,0,0,0.5);
+    width: 100%;
+    align-self: end;
+
+}
+.footer h6 {
+    font-size: 1.2em;
+    color: #FFFFFF;
+}
+
+.footer p {
+    color: #FFFFFF;
+}

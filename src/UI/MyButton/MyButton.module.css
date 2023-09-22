@@ -1,0 +1,26 @@
+.button {
+    padding: 6px 20px;
+    background: #FFF;
+    color: var(--main-theme-color);
+    border: var(--main-theme-color) 1px solid;
+    border-radius: 6px;
+    font-weight: 900;
+    transition: all 300ms
+}
+
+
+@media screen and (min-width: 800px){
+    .button:hover {
+        background: var(--main-theme-color);
+        color: #FFF;
+        border: var(--main-theme-color) 1px solid;
+        transition: all 300ms;
+    }
+}
+
+.button:disabled {
+    background: #FFFFFF;
+    color: #AAAAAA;
+    border: #AAAAAA 1px solid;
+    transition: all 700ms;
+}

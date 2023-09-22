@@ -1,38 +1,556 @@
-.App {
-  text-align: center;
+
+.App{
+    max-width: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 100%;
+    align-items: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+a {
+    text-decoration-line: none;
+    color: var(--main-theme-color);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+a:hover {
+    color: var(--main-theme-color);
+    font-weight: 900;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+@media (min-width: 576px) {
+    .container, .container-sm {
+        max-width: 100% !important;
+    }
 }
 
-.App-link {
-  color: #61dafb;
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+textarea, textarea:active, textarea:focus {
+    border: solid 1px #ced4da !important;
+    min-height: 100px;
+    outline: none !important;
+    color: var(--main-text-color);
+    border-radius: 8px;
+    padding: 6px 12px;
+    width: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.user-selector .btn-primary {
+    min-width: 300px;
 }
+
+.edit-competition .comp-img {
+    position: relative;
+    width: var(--mini-img-width);
+}
+
+.sport-category-trick {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 8fr 26px;
+    border-radius: 8px;
+}
+
+.sport-category-trick > div {
+    padding: 5px 2px 2px 5px;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    border: #AAAAAA solid 1px;
+}
+
+.add-competition-tricks, .current-competition-tricks, .competition-criteria-list {
+    padding: 8px 8px;
+
+}
+
+.header{
+    font-weight: 900;
+}
+
+.current-competition-tricks .header, .current-competition-tricks .trick {
+    display: grid;
+    border-bottom: #AAAAAA 1px solid;
+    grid-template-columns: 3fr 3fr 5fr 2fr 2fr 24px;
+    gap: 5px;
+    align-items: center;
+}
+
+.add-competition-tricks .header, .add-competition-tricks .trick {
+    display: grid;
+    border-bottom: #AAAAAA 1px solid;
+    grid-template-columns: 3fr 2fr 7fr 24px;
+    gap: 5px;
+    align-items: center;
+}
+
+.public-page .competition-team-list .header, .public-page .competition-team-list .team {
+    grid-template-columns: 3fr 2fr 5fr 2fr 8fr;
+}
+
+.competition-team-list .header, .competition-team-list .team {
+    display: grid;
+    grid-template-columns: 3fr 2fr 5fr 8fr;
+    gap: 10px;
+    border-bottom: #AAAAAA 1px solid;
+    align-items: center;
+    padding: 10px 10px;
+}
+
+@media screen and (max-width: 800px) {
+    .public-page .competition-team-list .header, .public-page .competition-team-list .team {
+        grid-template-columns: 2fr 2fr 4fr;
+        grid-template-areas:
+    "a b c d"
+    "e e e e";
+    }
+    .competition-team-list .header, .competition-team-list .team{
+        grid-template-columns: 2fr 2fr 4fr;
+        grid-template-areas:
+    "a b c "
+    "d d d ";
+    }
+    .competition-team-list .team .accordion {
+        grid-area: d;
+    }
+    .competition-team-list .team .team-mini-img {
+        grid-area: a;
+    }
+    .competition-team-list .team .team-color {
+        grid-area: b;
+    }
+    .competition-team-list .team .team-name {
+        grid-area: c;
+    }
+}
+
+.index-competition {
+    border-bottom: #AAAAAA 2px solid;
+    padding: 15px 5px;
+}
+
+.competition-criteria-list .header, .competition-criteria-list .modifier {
+    display: grid;
+    border-bottom: #AAAAAA 1px solid;
+    grid-template-columns: 50px 1fr 3fr 1fr 50px 50px 1fr 24px;
+    gap: 5px;
+    align-items: center;
+}
+
+.add-change-team .change-img, .add-change-contestant .change-img {
+    max-height: 300px;
+    border-radius: 8px;
+    margin: 8px 0;
+}
+
+.competition-groups-list .header, .competition-groups-list .group{
+    display: grid;
+    margin-top: 10px;
+    grid-template-columns: 6fr 2fr 2fr 24px;
+    grid-template-areas:
+    "a b c d"
+    "e e e e";
+    border-bottom: #AAAAAA 1px solid;
+    align-items: center;
+    gap: 5px
+}
+
+.competition-control .group-list {
+    max-width: 100%;
+    width: 700px;
+}
+
+.competition-control .group-list .header, .competition-control .group-list .group {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    align-items: center;
+}
+
+.competition-groups-list .group .accordion{
+    grid-area: e;
+}
+
+.competition-control .group,.competition-control .header {
+    border-bottom: 1px #AAAAAA solid;
+}
+
+.heat-trick-list .trick .form-control {
+    width: 55px;
+}
+
+.heat-trick-list .header,
+.heat-trick-list .trick {
+    border-bottom: 1px solid #AAAAAA;
+}
+
+.heat-trick-list .header > div:first-child,
+.heat-trick-list .trick > span:first-child {
+    width: 30px;
+    margin-left: 10px;
+    flex: 0 1 30px !important;
+    align-self: center;
+}
+
+.next-round-block {
+    border-top: #AAAAAA solid 1px;
+    border-bottom: #AAAAAA solid 1px;
+    margin-top: 15px;
+    padding-bottom: 15px;
+}
+
+
+@media screen and (max-width: 600px) {
+
+
+
+    .heat-trick-list .header {
+        font-size: 0.5em;
+    }
+    .heat-trick-list .trick {
+        font-size: 0.6em;
+    }
+    .competition-control .round{
+        font-size: 0.9em;
+        padding: 0 0;
+    }
+    .competition-control .status{
+        font-size: 0.9em;
+        padding: 0 0;
+    }
+}
+
+.contestant-trick-list .header, .contestant-trick-list .trick {
+    display: grid;
+    grid-template-columns: 8fr 2fr 2fr 2fr;
+    border-bottom: #AAAAAA 1px solid;
+    align-items: center;
+    gap: 5px
+}
+
+.contestant-page .heat-groups {
+    border-top: #AAAAAA 2px solid;
+}
+
+.solo-competition-contestants-list .header, .solo-competition-contestants-list .contestant {
+    display: grid;
+    grid-template-columns: 3fr 3fr 3fr 3fr;
+    border-bottom: #AAAAAA 1px solid;
+    align-items: center;
+    gap: 5px
+}
+.solo-competition-contestants-list .contestant img {
+    max-height: 50px;
+    cursor: pointer;
+}
+.public-page  .team-mini-img img {
+    max-width: 90px;
+    max-height: 70px;
+
+}
+
+
+.team-mini-img img {
+    max-width: 50px;
+    max-height: 40px;
+    cursor: pointer;
+}
+
+.full-img-modal .full-img {
+    max-width: 100%;
+    max-height: 1000px;
+}
+
+.hide-edit-block {
+    color: var(--main-theme-color);
+    font-size: 1.3rem;
+    cursor: pointer;
+    font-weight: 900;
+    display: flex;
+    justify-content: right;
+}
+
+.contestant-trick-list .accordion .accordion-button {
+    text-align: center;
+    display: block;
+    padding: 3px 10px;
+}
+
+.back-nav-btn {
+
+    position: relative;
+    width: 100%;
+}
+
+@media screen and (max-width: 991px) {
+    .add-competition-tricks div, .sport-category-trick div, .current-competition-tricks div{
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .add-competition-tricks div, .sport-category-trick div, .current-competition-tricks div{
+        font-size: 0.7rem;
+    }
+
+}
+
+.sport-category-trick div:last-child {
+    padding: 4px 0 0 0;
+}
+
+.sport-category-trick div:nth-child(2), .sport-category-trick div:nth-child(3){
+    text-align: center;
+}
+
+.sport-category-trick.trick div:first-child input{
+    margin-left: 5px;
+}
+
+.sport-category-trick.trick .del-btn {
+    align-self: center;
+}
+
+.sports-categories-modal .form-check label{
+    line-height: 15px;
+}
+
+.active {
+    color: var(--main-theme-color);
+    font-weight: 700;
+}
+
+.add-mini-btn {
+    cursor: pointer;
+}
+
+.del-mini-btn {
+    color: #AAAAAA;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 24px;
+}
+
+.mini-btn {
+    cursor: pointer;
+}
+
+.sport-edit-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+}
+
+.sport-edit-row div:last-child {
+    justify-self: right;
+}
+
+@media screen and (max-width: 991px){
+    .sport-edit-row button {
+        font-size: 0.7em;
+        padding: 0 0;
+    }
+
+}
+
+.user-list-modal .user-list{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    gap: 5px;
+}
+
+.user-list-modal .user-list div:nth-child(2) {
+    justify-self: center;
+}
+
+.btn-primary:disabled{
+    background-color: transparent;
+    border-color: #AAAAAA;
+    color: #AAAAAA;
+    font-weight: 900;
+}
+
+.del-btn {
+    color: orangered ;
+    cursor: pointer;
+    text-shadow: 3px 3px 5px #FFFFFF;
+}
+
+.accordion-button {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.accordion-button, .accordion-button:not(.collapsed) {
+    background-color: var(--main-theme-light-color);
+    color: #FFFFFF;
+}
+.accordion-button:after, .accordion-button:not(.collapsed):after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+
+.accordion-button:active, .accordion-button:focus, .accordion-button:hover{
+    box-shadow: 0 0 8px var(--main-theme-light-color);
+}
+
+.edit-competition .del-btn {
+    position: absolute;
+    top: 5px;
+    right: 25px;
+}
+
+.edit-competition .gallery  {
+    max-width: 100%;
+    margin: 0 auto;
+    column-count: 3;
+}
+
+.edit-competition .gallery-item {
+    break-inside: avoid;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.edit-competition .gallery-item img {
+    border-radius: 8px;
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+
+}
+
+
+@media screen and (min-width: 1200px) {
+
+    .edit-competition .gallery img{
+        width: var(--mini-img-width);
+    }
+}
+
+@media screen and (max-width: 1200px) {
+
+    .edit-competition .gallery img{
+        width: 300px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+
+    .edit-competition .gallery {
+        column-count: 2;
+    }
+}
+
+
+@media screen and (max-width: 770px) {
+
+    .edit-competition .gallery-item img {
+        max-width: 200px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .edit-competition .gallery {
+        column-count: 1;
+    }
+
+    .edit-competition .gallery-item img {
+        max-width: 300px;
+    }
+}
+
+.switch-line {
+    height: 20px;
+}
+
+.switch-line .form-switch {
+    padding-left: 47px;
+}
+
+.switch-line .active  {
+    font-weight: 700;
+    color: var(--main-theme-color)
+}
+
+input, .form-control {
+    color: var(--main-text-color);
+}
+
+textarea:focus {
+    color: #444444;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+h1, h2, h3, h4, h5, h6, p, div {
+    color: var(--main-text-color);
+    font-family: var(--main-font);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+}
+
+#responsive-navbar-nav.show  {
+    overflow-y: scroll;
+
+}
+
+#responsive-navbar-nav::-webkit-scrollbar{
+    display: none;
+}
+
+.mainContainer {
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+    flex-grow: 1;
+    justify-content: center;
+
+}
+.modal-content input {
+    margin: 10px 0;
+}
+
+.btn-primary {
+    background-color: var(--main-theme-color);
+    border-color: var(--main-theme-color);
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+    text-shadow: 0px 0px 7px #FFFFFF;
+    background-color: var(--main-theme-color) !important;
+    border-color: var(--main-theme-color)  !important;;
+
+}
+
+.form-check-input:checked {
+    background-color: var(--main-theme-color);
+    border-color: var(--main-theme-color);
+}
+
+.form-control:focus, .form-check-input:focus, textarea:focus {
+    border-color: var(--main-theme-color);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px var(--main-theme-color);
+
+}
+
+@media screen and (max-width: 991px){
+    .mainContainer {
+        margin-top: 80px;
+    }
+    #responsive-navbar-nav{
+        background-color: #777777;
+        opacity: 0.8;
+        padding: 10px 0px 10px 0px;
+    }
+    #responsive-navbar-nav .active {
+        background-color: var(--main-theme-color);
+        text-shadow: none;
+    }
+}
+
