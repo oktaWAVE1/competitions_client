@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link, useParams} from "react-router-dom";
-import {fetchCurrentCompetition} from "../../http/competitionAPI";
+import {fetchAllCompetitionTricks, fetchCompetitionImages, fetchCurrentCompetition} from "../../http/competitionAPI";
 import {fetchUsers} from "../../http/userAPI";
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
@@ -10,18 +10,30 @@ import FullImgModal from "../modals/FullImgModal";
 import CompetitionTrickList from "../competitionTrickList";
 import CompetitionModifiersList from "../competitionModifiersList";
 import Loader from "../../UI/Loader/Loader";
+import {fetchCompetitionContestants, fetchCompetitionTeams} from "../../http/contestantAPI";
 
 const CompetitionPublicPage = observer(() => {
     const {competitionId} = useParams()
     const {loading} = useContext(Context)
     const [current, setCurrent] = useState({});
+    const [competitionTricks, setCompetitionTricks] = useState([]);
+    const [teams, setTeams] = useState([]);
+    const [contestants, setContestants] = useState([]);
     const [imgModal, setImgModal] = useState({show: false, img: '', path: ''});
+    const [competitionImages, setCompetitionImages] = useState([]);
 
 
     useEffect(() => {
         loading.setLoading(true)
+        fetchCompetitionImages({competitionId}).then((data) => setCompetitionImages(data))
+        fetchAllCompetitionTricks({competitionId}).then((data) => setCompetitionTricks(data))
         fetchCurrentCompetition(competitionId).then((data) => {
             setCurrent(data)
+            if(data.teamType) {
+                fetchCompetitionTeams({competitionId}).then(data => setTeams(data))
+            } else {
+                fetchCompetitionContestants({competitionId}).then(data => setContestants(data))
+            }
         }).finally(() => loading.setLoading(false))
     }, [competitionId]);
     if (loading.loading){
@@ -38,7 +50,7 @@ const CompetitionPublicPage = observer(() => {
                     <Accordion.Body>
                         <CompetitionModifiersList modifiers={current?.competition_modifiers} />
                         <hr />
-                        <CompetitionTrickList tricks={current?.competition_tricks} />
+                        <CompetitionTrickList tricks={competitionTricks} />
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
@@ -59,7 +71,7 @@ const CompetitionPublicPage = observer(() => {
             }
 
 
-            {current?.teams?.length > 0 &&
+            {teams?.length > 0 &&
                 <div>
                     <div className='competition-team-list'>
                     <h3>Список команд и участников</h3>
@@ -70,7 +82,7 @@ const CompetitionPublicPage = observer(() => {
                             <div className='text-center'>Баллы</div>
 
                         </div>
-                    {current?.teams.sort((a,b) => b?.team_result?.total - a?.team_result?.total).map(t =>
+                    {teams.sort((a,b) => b?.team_result?.total - a?.team_result?.total).map(t =>
                         <div className='team' key={t.id}>
                             <div className='team-mini-img'>{t.img && <img onClick={() => setImgModal({show: true, img: t.img, path: '/images/teams/'})} src={process.env.REACT_APP_API_URL+`/images/teams/mini/${t.img}`}/>}</div>
                             <div className='team-color' style={{backgroundColor: t.color, width: '40px', height: '30px'}}></div>
@@ -98,12 +110,12 @@ const CompetitionPublicPage = observer(() => {
             }
 
 
-                    {(current?.contestants?.length>0 && current?.teams?.length < 1) &&
+                    {(contestants?.length>0 && teams?.length < 1) &&
                         <Accordion className='mt-3'>
                             <Accordion.Item eventKey={'contestants'}>
                                 <Accordion.Header className='classic_btn'>Список участников</Accordion.Header>
                                 <Accordion.Body>
-                                        {current?.contestants.sort((a, b)=> a.id - b.id).map((c, index) =>
+                                        {contestants.sort((a, b)=> a.id - b.id).map((c, index) =>
                                             <div key={c.id}>
                                                 <div className='text-center'>{`${index+1}. ${c.name}` + `${c.number ? ` - ${c.number}` : ''}`}</div>
                                             </div>
@@ -114,13 +126,11 @@ const CompetitionPublicPage = observer(() => {
 
                          }
 
-
-
-            {current?.competition_images?.length>0 &&
+            {competitionImages?.length>0 &&
                 <div>
                     <h3 className='mt-3'>Изображения:</h3>
                     <div className="gallery">
-                        {current.competition_images.map(i =>
+                        {competitionImages.map(i =>
                             <div className="gallery-item" key={i.id}>
                                 <img onClick={() => setImgModal({show: true, img: i.img, path: '/images/competitions/'})}  loading="lazy" src={process.env.REACT_APP_API_URL+`/images/competitions/mini/${i.img}`} />
                             </div>

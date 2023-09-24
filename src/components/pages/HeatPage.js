@@ -85,8 +85,7 @@ const HeatPage = () => {
 
     return (
         <div className='w-100 p-3 heat-page'>
-            <MyButton onClick={() => console.log(heat)}>Click</MyButton>
-            <MyButton classes='back-nav-btn' onClick={() => navigate(`/competition_control/${heat?.competitionId}`)}>Назад к сореванованию</MyButton>
+            <MyButton classes='back-nav-btn' onClick={() => navigate(-1)}>Назад</MyButton>
             <h2>Заезд. Раунд {heat?.round}. Участник: {heat?.contestant?.name}{heat?.contestant?.number>0 && ` - ${heat.contestant.number}`}.</h2>
             <Card className='p-2 mb-3'>
                 <h4>Добавить трюк</h4>

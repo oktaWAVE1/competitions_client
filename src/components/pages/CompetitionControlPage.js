@@ -90,7 +90,6 @@ const CompetitionControlPage = observer(() => {
     return (
         <div className='competition-control w-100 p-2 d-flex flex-column align-items-center'>
             <MyButton classes='back-nav-btn' onClick={() => navigate(`/edit_competition/${competitionId}`)}>Назад к сореванованию</MyButton>
-            <MyButton onClick={() => click()}>Click</MyButton>
             <h1>Управление соревнованием. {competition.currentCompetition?.name}.</h1>
             {competition.currentCompetition?.teamType &&
             <Form>

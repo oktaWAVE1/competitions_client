@@ -6,44 +6,52 @@ import {
     addAllCompetitionTricks,
     addCompetitionTrick,
     delAllCompetitionTricks,
-    delCompetitionTrick,
+    delCompetitionTrick, fetchAllCompetitionTricks,
     fetchCurrentCompetition, modifyCompetitionTrick
 } from "../../http/competitionAPI";
 import Loader from "../../UI/Loader/Loader";
 import MyButton from "../../UI/MyButton/MyButton";
 import {fetchAllTricks} from "../../http/trickAPI";
 import {Form} from "react-bootstrap";
+import useDebounce from "../../hooks/useDebounce";
 
 const CompetitionTricksPage = observer(() => {
     const {competitionId} = useParams()
-    const {competition} = useContext(Context)
+    const {competition, loading} = useContext(Context)
     const navigate = useNavigate()
     const [addTricks, setAddTricks] = useState(false);
-    const [loading, setLoading] = useState(true);
     const [refresh, setRefresh] = useState(1);
+    const [secondRefresh, setSecondRefresh] = useState(1);
     const [tricks, setTricks] = useState([]);
     const [currentTricks, setCurrentTricks] = useState([]);
     const [currentCompetitionTricks, setCurrentCompetitionTricks] = useState();
     const [checked, setChecked] = useState(null);
     const [currentTrick, setCurrentTrick] = useState({points:'', level:'', id: '', name: ''});
     const changeTrickSection = useRef(null)
-    useEffect(() => {
-        fetchCurrentCompetition(competitionId).then(async (data) => {
-            competition.setCurrentCompetition(data)
-        }).then(async () => {
 
-            await fetchAllTricks({sportId: competition.currentCompetition.sportId})
-                .then(data => setTricks(data)).then(() => {
-                    let array = []
-                    competition.currentCompetition.competition_tricks.forEach(t => array.push(t.trickId))
-                    setCurrentTricks(array)
-                })
-        }).then(() =>
-        setCurrentCompetitionTricks([...competition.currentCompetition?.competition_tricks]
+    useEffect(() => {
+        loading.setLoading(true)
+        fetchCurrentCompetition(competitionId).then((data) => competition.setCurrentCompetition(data)).then(async () =>
+        await fetchAllTricks({sportId: competition.currentCompetition.sportId}))
+            .then(data => setTricks(data)).finally(() => {
+            setRefresh(prev => prev + 1)
+            }
+        )
+    }, [competitionId]);
+
+    useDebounce(async () => {
+        await fetchAllCompetitionTricks({competitionId}).then((data) => setCurrentCompetitionTricks(data))
+            .finally(() =>setSecondRefresh(prev => prev+1))
+    }, 0, [refresh])
+    useDebounce( () => {
+        let array = []
+        currentCompetitionTricks.forEach(t => array.push(t.trickId))
+        setCurrentTricks(array)
+        setCurrentCompetitionTricks([...currentCompetitionTricks]
             .sort((a, b) => a.points - b.points)
             .sort((a, b) => a.trick.categoryId - b.trick.categoryId))
-        ).finally(() => setLoading(false))
-    }, [competitionId, refresh]);
+        loading.setLoading(false)
+    }, 0, [secondRefresh])
 
 
     const modifyTrick = async (e) => {
@@ -57,28 +65,24 @@ const CompetitionTricksPage = observer(() => {
     }
 
     const addTrick = async (trickId) => {
-        setLoading(true)
         await addCompetitionTrick({competitionId, trickId}).then(() => setRefresh(prev => prev + 1))
     }
 
     const addAllTricks = async() => {
-        setLoading(true)
         await addAllCompetitionTricks({competitionId, sportId: competition.currentCompetition.sportId}).then(() => setRefresh(prev => prev + 1))
 
     }
 
     const delTrick = async (e, id) => {
         e.preventDefault()
-        setLoading(true)
         await delCompetitionTrick({id}).then(() => setRefresh(prev => prev + 1))
     }
 
     const delAll = async () => {
-        setLoading(true)
         await delAllCompetitionTricks({competitionId}).then(() => setRefresh(prev => prev + 1)).then(() => setRefresh(prev => prev + 1))
     }
 
-    if(loading){
+    if(loading.loading){
         return <Loader />
     }
     return (
@@ -89,11 +93,11 @@ const CompetitionTricksPage = observer(() => {
             <div>
                 <Form className='d-flex justify-content-between align-items-center'>
                     <Form.Switch checked={addTricks} onChange={() => setAddTricks(prev => !prev)} label='Добавить трюки'/>
-                    <MyButton onClick={() => addAllTricks()} disabled={currentTricks.length===tricks.length}>Добавить все трюки</MyButton>
+                    <MyButton onClick={() => addAllTricks()} disabled={currentTricks?.length===tricks?.length}>Добавить все трюки</MyButton>
                 </Form>
                 {addTricks &&
                     <div>
-                    {(currentTricks.length===tricks.length) ?
+                    {(currentTricks?.length===tricks?.length) ?
                         <h3>Все трюки добавлены</h3> :
                         <div>
 
@@ -136,7 +140,7 @@ const CompetitionTricksPage = observer(() => {
                             <div className='text-center'>Баллы</div>
                             <div className='text-center'>Сложность</div>
                         </div>
-                        {currentCompetitionTricks.map(t =>
+                        {currentCompetitionTricks?.map(t =>
                             <Form className='trick' key={t.id}>
                                 <div>{t?.trick?.category?.parent?.id ? `${t?.trick?.category?.parent?.name} > ${t?.trick?.category?.name}` : t?.trick?.category?.name}</div>
                                 <div>

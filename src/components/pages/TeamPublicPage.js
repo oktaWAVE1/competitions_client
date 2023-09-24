@@ -13,7 +13,7 @@ const TeamPublicPage = () => {
 
     return (
         <div className='w-100 p-2'>
-            <MyButton onClick={() => console.log(team)}>click</MyButton>
+            <MyButton classes='mt-2 w-100' onClick={() => navigate(-1)}>Перейти назад</MyButton>
             <h3>Команда: {team?.name}</h3>
             <h3>Сумма баллов команды: <strong>{team?.team_result?.total}</strong></h3>
             {team?.contestants?.length>0 &&
@@ -42,7 +42,7 @@ const TeamPublicPage = () => {
                 </div>
             }
 
-            <MyButton classes='mt-2 w-100' onClick={() => navigate(-1)}>Перейти назад</MyButton>
+
         </div>
     );
 };

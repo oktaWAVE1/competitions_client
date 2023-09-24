@@ -15,7 +15,7 @@ const ContestantPage = () => {
 
     return (
         <div className='contestant-page w-100 p-2'>
-            <MyButton onClick={() => console.log(contestant)}>click</MyButton>
+            <MyButton classes='mt-2 w-100' onClick={() => navigate(-1)}>Перейти назад</MyButton>
 
             <h1>{contestant?.name}.{contestant?.number>0 && ` Номер - ${contestant.number}`}</h1>
             <hr/>
@@ -90,7 +90,7 @@ const ContestantPage = () => {
 
             </div>
             }
-            <MyButton classes='mt-2 w-100' onClick={() => navigate(-1)}>Перейти назад</MyButton>
+
         </div>
     );
 };

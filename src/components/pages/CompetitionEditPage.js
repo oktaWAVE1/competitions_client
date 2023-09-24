@@ -4,7 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Context} from "../../index";
 import {
     addCompetitionImg, addCompetitionReferee, delCompetition,
-    delCompetitionImg, delCompetitionReferee, editCompetition,
+    delCompetitionImg, delCompetitionReferee, editCompetition, fetchCompetitionImages, fetchCompetitionReferees,
     fetchCurrentCompetition
 } from "../../http/competitionAPI";
 import {Card, Container, Dropdown, Form, Row} from "react-bootstrap";
@@ -17,20 +17,22 @@ import UserSearch from "../userSearch";
 
 const CompetitionEditPage = observer(() => {
     const {competitionId} = useParams()
-    const {competition, loading} = useContext(Context)
+    const {loading} = useContext(Context)
     const [delConfirm, setDelConfirm] = useState(false);
     const [file, setFile] = useState(null);
+    const [referees, setReferees] = useState([]);
+    const [competitionImages, setCompetitionImages] = useState([]);
     const [current, setCurrent] = useState({name: '', description: '', admin: '', adminId: '', competition_images: [], teamType: false, sport: {name: ''}, referees: []});
     const navigate = useNavigate()
     const [users, setUsers] = useState([]);
     const [newReferee, setNewReferee] = useState({id: '', name: ''});
     useEffect(() => {
         loading.setLoading(true)
+        fetchCompetitionReferees({competitionId}).then((data) => setReferees(data))
+        fetchCompetitionImages({competitionId}).then((data) => setCompetitionImages(data))
         fetchCurrentCompetition(competitionId).then((data) => {
             setCurrent(data)
-            competition.setCurrentCompetition(data)
             fetchUsers().then(data => setUsers(data.sort((a, b) => a.name - b.name)))
-
         }).finally(() => loading.setLoading(false))
     }, [competitionId]);
 
@@ -38,7 +40,6 @@ const CompetitionEditPage = observer(() => {
         loading.setLoading(true)
         fetchCurrentCompetition(competitionId).then((data) => {
         setCurrent(data)
-        competition.setCurrentCompetition(data)
         loading.setLoading(false)
     })}, 1000, [loading.refresh])
 
@@ -160,10 +161,10 @@ const CompetitionEditPage = observer(() => {
                             callback={addReferee}
                             user={newReferee} />
 
-                            {current?.referees?.length===0 ?
+                            {referees?.length===0 ?
                             <div>Судьи пока не назначены</div> :
                             <div>
-                                {current?.referees.map(r =>
+                                {referees.map(r =>
                                     <div key={r.id}>
                                         <div><span>{r.user.name}</span>
                                             <span title='Удалить категорию' onClick={e => delReferee(e, r.id)}
@@ -177,7 +178,7 @@ const CompetitionEditPage = observer(() => {
                             }
                             <MyButton onClick={() => navigate(`/competition_tricks/${competitionId}`)}>Перейти к списку трюков</MyButton>
                             <MyButton onClick={() => navigate(`/competition_criteria/${competitionId}`)}>Перейти к списку дополнительных критериев оценки</MyButton>
-                        {competition?.currentCompetition.teamType ?
+                        {current.teamType ?
                             <MyButton onClick={() => navigate(`/competition_teams/${competitionId}`)}>Перейти к списку команд и участников</MyButton> :
                             <MyButton onClick={() => navigate(`/competition_contestants/${competitionId}`)}>Перейти к списку участников</MyButton>
                         }
@@ -185,11 +186,11 @@ const CompetitionEditPage = observer(() => {
                         <MyButton onClick={() => navigate(`/competition_control/${competitionId}`)}>Перейти к управлению соревнованием</MyButton>
                                 <AddImgModule multiple={true} setFile={setFile} />
                                 <MyButton disabled={!file} classes="w-100 mt-2" onClick={(e) => addImg(e)}>ДОБАВИТЬ</MyButton>
-                            {current?.competition_images.length>0 &&
+                            {competitionImages?.length>0 &&
                             <div>
                                 <h3 className='mt-3'>Изображения:</h3>
                                 <div className="gallery">
-                                    {current.competition_images.map(i =>
+                                    {competitionImages.map(i =>
                                         <div className="gallery-item" key={i.id}>
                                             <img loading="lazy" src={process.env.REACT_APP_API_URL+`/images/competitions/mini/${i.img}`} />
                                             <span title='Удалить изображение' className='del-btn' onClick={(e) => delImg(e, i.id)}><span

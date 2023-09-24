@@ -16,6 +16,15 @@ export const fetchCurrentCompetition = async (id) => {
     return data
 }
 
+export const fetchCompetitionImages = async ({competitionId}) => {
+    const {data} = await $host.get(`api/competition/img/${competitionId}`)
+    return data
+}
+export const fetchCompetitionReferees = async ({competitionId}) => {
+    const {data} = await $host.get(`api/competition/referee/${competitionId}`)
+    return data
+}
+
 export const addCompetitionImg = async(img) => {
     const {data} = await $authHost.post('api/competition/img', (img))
     return data
