@@ -38,6 +38,8 @@ const CompetitionEditPage = observer(() => {
 
     useDebounce(() => {
         loading.setLoading(true)
+        fetchCompetitionReferees({competitionId}).then((data) => setReferees(data))
+        fetchCompetitionImages({competitionId}).then((data) => setCompetitionImages(data))
         fetchCurrentCompetition(competitionId).then((data) => {
         setCurrent(data)
         loading.setLoading(false)
