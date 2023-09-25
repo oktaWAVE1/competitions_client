@@ -93,7 +93,7 @@ const ResetPass = () => {
 
             </Container>
             <Helmet>
-                <title>Сброс пароля | Зоолайнер</title>
+                <title>Сброс пароля | wow-contest.ru</title>
             </Helmet>
         </div>
     );

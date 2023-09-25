@@ -145,7 +145,7 @@ const CompetitionPublicPage = observer(() => {
                 <Link className='text-right' to={`/host/${competitionId}`}>Страница ведущего</Link>
             </div>
             <Helmet>
-                <title>{current?.name} | wow-contest.ru</title>
+                <title>{`${current?.name}`} | wow-contest.ru</title>
             </Helmet>
         </div>
     );
