@@ -102,16 +102,27 @@ textarea, textarea:active, textarea:focus {
 
 @media screen and (max-width: 800px) {
     .public-page .competition-team-list .header, .public-page .competition-team-list .team {
-        grid-template-columns: 2fr 2fr 4fr;
+        grid-template-columns: 2fr 2fr 2fr;
         grid-template-areas:
     "a b c"
-    "d d e";
+    "d d d"
+    "e e e";
+
     }
+
+    .competition-team-list .header {
+        text-align: center;
+    }
+
     .competition-team-list .header, .competition-team-list .team{
         grid-template-columns: 2fr 2fr 4fr;
         grid-template-areas:
     "a b c"
     "d d d";
+    }
+
+    .competition-team-list .header, .competition-team-list .total {
+        grid-area: d ;
     }
 
     .public-page .competition-team-list .team .accordion {

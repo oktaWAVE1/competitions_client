@@ -16,7 +16,6 @@ import CategoryTrickList from "../categoryTrickList";
 import {Context} from "../../index";
 import useDebounce from "../../hooks/useDebounce";
 import HeatTrickList from "../heatTrickList";
-import useTimeout from "../../hooks/useTimeout";
 
 const HeatPage = () => {
     const {loading} = useContext(Context)
@@ -29,7 +28,7 @@ const HeatPage = () => {
     const [tricks, setTricks] = useState([]);
     const [sportCategories, setSportCategories] = useState([]);
     const [checkedCategory, setCheckedCategory] = useState(null);
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
 
     useEffect(() => {
         loading.setLoading(true)
@@ -46,6 +45,7 @@ const HeatPage = () => {
                 .then(sportData => setSportCategories([...sportData.categories]))
             )})
             .finally(() => loading.setLoading(false))
+        // eslint-disable-next-line
     }, [heatId, loading.refresh]);
 
 

@@ -1,11 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link, useParams} from "react-router-dom";
 import {fetchAllCompetitionTricks, fetchCompetitionImages, fetchCurrentCompetition} from "../../http/competitionAPI";
-import {fetchUsers} from "../../http/userAPI";
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
-import MyButton from "../../UI/MyButton/MyButton";
-import {Accordion, Form} from "react-bootstrap";
+import {Accordion} from "react-bootstrap";
 import FullImgModal from "../modals/FullImgModal";
 import CompetitionTrickList from "../competitionTrickList";
 import CompetitionModifiersList from "../competitionModifiersList";
@@ -24,6 +22,7 @@ const CompetitionPublicPage = observer(() => {
 
 
     useEffect(() => {
+
         loading.setLoading(true)
         fetchCompetitionImages({competitionId}).then((data) => setCompetitionImages(data))
         fetchAllCompetitionTricks({competitionId}).then((data) => setCompetitionTricks(data))
@@ -35,6 +34,7 @@ const CompetitionPublicPage = observer(() => {
                 fetchCompetitionContestants({competitionId}).then(data => setContestants(data))
             }
         }).finally(() => loading.setLoading(false))
+        // eslint-disable-next-line
     }, [competitionId]);
     if (loading.loading){
         return <Loader/>
@@ -76,18 +76,18 @@ const CompetitionPublicPage = observer(() => {
                     <div className='competition-team-list'>
                     <h3>Список команд и участников</h3>
                         <div className='header'>
-                            <div>Изображение</div>
-                            <div>Цвет</div>
-                            <div>Название</div>
-                            <div className='text-center'>Баллы</div>
+                            <div className='text-center'>Изображение</div>
+                            <div className='text-center'>Цвет</div>
+                            <div className='text-center'>Название</div>
+                            <div className='total text-center'>Баллы</div>
 
                         </div>
                     {teams.sort((a,b) => b?.team_result?.total - a?.team_result?.total).map(t =>
                         <div className='team' key={t.id}>
-                            <div className='team-mini-img'>{t.img && <img onClick={() => setImgModal({show: true, img: t.img, path: '/images/teams/'})} src={process.env.REACT_APP_API_URL+`/images/teams/mini/${t.img}`}/>}</div>
-                            <div className='team-color' style={{backgroundColor: t.color, width: '40px', height: '30px'}}></div>
-                            <Link to={`/team/${t.id}`}><div className='team-name'>{t.name}</div></Link>
-                            <div className='text-center'><strong>{t?.team_result?.total}</strong></div>
+                            <div className='team-mini-img d-flex justify-content-center'>{t.img && <img alt='' onClick={() => setImgModal({show: true, img: t.img, path: '/images/teams/'})} src={process.env.REACT_APP_API_URL+`/images/teams/mini/${t.img}`}/>}</div>
+                            <div className='team-color w-100' style={{backgroundColor: t.color, width: '40px', height: '30px'}}></div>
+                            <Link to={`/team/${t.id}`}><div className='team-name text-center'>{t.name}</div></Link>
+                            <div className='text-center total'><strong>{t?.team_result?.total}</strong></div>
                             {!!t?.contestants?.length>0 &&
 
                                 <Accordion className='mt-0'>
@@ -132,7 +132,7 @@ const CompetitionPublicPage = observer(() => {
                     <div className="gallery">
                         {competitionImages.map(i =>
                             <div className="gallery-item" key={i.id}>
-                                <img onClick={() => setImgModal({show: true, img: i.img, path: '/images/competitions/'})}  loading="lazy" src={process.env.REACT_APP_API_URL+`/images/competitions/mini/${i.img}`} />
+                                <img alt='' onClick={() => setImgModal({show: true, img: i.img, path: '/images/competitions/'})}  loading="lazy" src={process.env.REACT_APP_API_URL+`/images/competitions/mini/${i.img}`} />
                             </div>
                         )}
                     </div>

@@ -14,7 +14,6 @@ import {
     fetchCompetitionGroupHeats,
     fetchCompetitionTeamGroupHeats
 } from "../../http/heatAPI";
-import {flushSync} from "react-dom";
 import useDebounce from "../../hooks/useDebounce";
 import NextRoundBlock from "../nextRoundBlock";
 import {fetchCompetitionTeams} from "../../http/contestantAPI";
