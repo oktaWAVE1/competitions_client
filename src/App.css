@@ -71,12 +71,6 @@ textarea, textarea:active, textarea:focus {
     font-weight: 900;
 }
 
-@media screen and (max-width: 600px){
-    .header {
-        font-size: 0.8;
-    }
-}
-
 .current-competition-tricks .header, .current-competition-tricks .trick {
     display: grid;
     border-bottom: #AAAAAA 1px solid;
@@ -110,15 +104,20 @@ textarea, textarea:active, textarea:focus {
     .public-page .competition-team-list .header, .public-page .competition-team-list .team {
         grid-template-columns: 2fr 2fr 4fr;
         grid-template-areas:
-    "a b c d"
-    "e e e e";
+    "a b c"
+    "d d e";
     }
     .competition-team-list .header, .competition-team-list .team{
         grid-template-columns: 2fr 2fr 4fr;
         grid-template-areas:
-    "a b c "
-    "d d d ";
+    "a b c"
+    "d d d";
     }
+
+    .public-page .competition-team-list .team .accordion {
+        grid-area: e;
+    }
+
     .competition-team-list .team .accordion {
         grid-area: d;
     }

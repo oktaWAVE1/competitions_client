@@ -87,8 +87,8 @@ const CompetitionPublicPage = observer(() => {
                             <div className='team-mini-img'>{t.img && <img onClick={() => setImgModal({show: true, img: t.img, path: '/images/teams/'})} src={process.env.REACT_APP_API_URL+`/images/teams/mini/${t.img}`}/>}</div>
                             <div className='team-color' style={{backgroundColor: t.color, width: '40px', height: '30px'}}></div>
                             <Link to={`/team/${t.id}`}><div className='team-name'>{t.name}</div></Link>
-                            <div className='text-center'>{t?.team_result?.total}</div>
-                            {t?.contestants?.length>0 &&
+                            <div className='text-center'><strong>{t?.team_result?.total}</strong></div>
+                            {!!t?.contestants?.length>0 &&
 
                                 <Accordion className='mt-0'>
                                     <Accordion.Item eventKey={t.id}>
