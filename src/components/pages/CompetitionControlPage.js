@@ -1,12 +1,16 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {observer} from "mobx-react-lite";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {Context} from "../../index";
 import {fetchCompetitionGroups, fetchCurrentCompetition, modifyCompetitionGroup} from "../../http/competitionAPI";
 import {Dropdown, Form} from "react-bootstrap";
 import MyButton from "../../UI/MyButton/MyButton";
 import {
-    addCompetitionFirstGroupHeats, addCompetitionTeamHeats, addCompetitionTeamNextRoundHeat,
+    addCompetitionFirstGroupHeats,
+    addCompetitionTeamHeats,
+    addCompetitionTeamNextRoundHeat,
+    delCompetitionContestantHeat,
+    delCompetitionTeamHeat,
     fetchCompetitionGroupHeats,
     fetchCompetitionTeamGroupHeats
 } from "../../http/heatAPI";
@@ -19,6 +23,7 @@ const CompetitionControlPage = observer(() => {
     const {competitionId} = useParams()
     const {competition, loading} = useContext(Context)
     const [teamType, setTeamType] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams()
     const [groups, setGroups] = useState([]);
     const [addTeams, setAddTeams] = useState(false);
     const [updGroup, setUpdGroup] = useState(1);
@@ -42,15 +47,25 @@ const CompetitionControlPage = observer(() => {
         }
         if (currentGroup.id && teamType) {
             fetchCompetitionTeamGroupHeats({groupId: currentGroup.id, round: currentGroup.round}).then((data) => {
-                console.log(data)
                 setCurrentTeamHeats([...data].sort((a, b) => a.order -b.order))
             })
         }
+        if(searchParams) {
+            let id = JSON.parse(searchParams.get('id'))
+            let description = JSON.parse(searchParams.get('description'))
+            let round = JSON.parse(searchParams.get('round'))
+            let status = JSON.parse(searchParams.get('status'))
+            let currentTeamType = JSON.parse(searchParams.get('teamType'))
+            setCurrentGroup({id, description, round, status})
+            setTeamType(currentTeamType==='true')
+        }
         loading.setLoading(false)
-    }, [loading.refresh, currentGroup.id, teamType]);
+    }, [loading.refresh, currentGroup.id]);
 
-    useDebounce(async () => await modifyCompetitionGroup({id: currentGroup.id, round: currentGroup.round, status: currentGroup.status})
-        .then(() => loading.setRefresh(prev => prev +1)), 100, [updGroup])
+    useDebounce(async () => {
+        await modifyCompetitionGroup({id: currentGroup.id, round: currentGroup.round, status: currentGroup.status})
+            .then(() => loading.setRefresh(prev => prev + 1))
+    }, 100, [updGroup])
 
     const addFirstGroupHeats = async () => {
         await addCompetitionFirstGroupHeats({
@@ -60,10 +75,14 @@ const CompetitionControlPage = observer(() => {
     }
 
     const addTeamNextRound = async () => {
+        setSearchParams(`id="${currentGroup.id}"&description="${currentGroup.description}"&round="${Number(currentGroup.round)+1}"&status="${currentGroup.status}"&teamType="${teamType ? 'true' : 'false'}"`)
+        setNextRound(false)
         await addCompetitionTeamNextRoundHeat({
             groupId: currentGroup.id,
             round: currentGroup.round
-        })
+        }).then(() =>
+            modifyGroup(currentGroup.id, currentGroup.description, Number(currentGroup.round)+1, currentGroup.status)
+        )
     }
 
     const addTeamGroupHeats = async () => {
@@ -76,16 +95,34 @@ const CompetitionControlPage = observer(() => {
         }).then(() => loading.setRefresh(prev => prev + 1))
     }
 
+    const delTeamHeat = async (teamHeatId) => {
+        await delCompetitionTeamHeat({teamHeatId}).then(() => loading.setRefresh(prev => prev + 1))
+    }
+
+    const delContestantHeat = async (heatId) => {
+        await delCompetitionContestantHeat({heatId}).then(() => loading.setRefresh(prev => prev + 1))
+    }
+
     const modifyGroup = async (id, description, round, status) => {
         setCurrentGroup({id, description, round, status})
+        setSearchParams(`id="${id}"&description="${description}"&round="${round}"&status="${status}"&teamType="${teamType ? 'true' : 'false'}"`)
         setUpdGroup(prev => prev+1)
-
     }
 
-    const click = () => {
-        console.log(currentTeamHeats)
+    const handleCheck = (id, description, round, status) => {
+        setCurrentGroup({id, description, round, status})
+        setSearchParams(`id="${id}"&description="${description}"&round="${round}"&status="${status}"&teamType="${teamType ? 'true' : 'false'}"`)
     }
 
+    const handleTeamTypeSwitch = () => {
+        let id = JSON.parse(searchParams.get('id'))
+        let description = JSON.parse(searchParams.get('description'))
+        let round = JSON.parse(searchParams.get('round'))
+        let status = JSON.parse(searchParams.get('status'))
+        setSearchParams(`id="${id}"&description="${description}"&round="${round}"&status="${status}"&teamType="${!teamType ? 'true' : 'false'}"`)
+        setTeamType(prev => !prev)
+        setUpdGroup(prev => prev+1)
+    }
 
     return (
         <div className='competition-control w-100 p-2 d-flex flex-column align-items-center'>
@@ -93,7 +130,7 @@ const CompetitionControlPage = observer(() => {
             <h1>Управление соревнованием. {competition.currentCompetition?.name}.</h1>
             {competition.currentCompetition?.teamType &&
             <Form>
-                <Form.Switch value={teamType} onChange={() => setTeamType(prev => !prev)} label='Командный режим' />
+                <Form.Switch checked={teamType} onChange={() => handleTeamTypeSwitch()} label='Командный режим' />
             </Form>
             }
             {groups?.length>0 &&
@@ -111,10 +148,8 @@ const CompetitionControlPage = observer(() => {
                                     type='radio'
                                     value={g.id}
                                     label={g.description}
-                                    onChange={(e) => {
-                                        setCurrentGroup({description: g.description, round: g.round, status: g.status, id: g.id})
-                                    }}
-                                    checked={g.id === currentGroup.id}
+                                    onChange={(e) => handleCheck(g.id, g.description, g.round, g.status)}
+                                    checked={Number(g.id) === Number(currentGroup.id)}
                                 />
                             </Form></div>
                             <div>
@@ -147,11 +182,21 @@ const CompetitionControlPage = observer(() => {
             }
             {currentHeats.length>0 && currentGroup.id &&
             <Form>
-                <Form.Switch value={nextRound} onChange={() => setNextRound(prev => !prev)} label='Следующий раунд' />
+                <Form.Switch checked={nextRound} onChange={() => setNextRound(prev => !prev)} label='Следующий раунд' />
             </Form>
             }
             {(currentHeats.length>0 && nextRound && currentGroup.id && !teamType ) &&
-                <NextRoundBlock round={currentGroup.round} groupId={currentGroup.id} groups={groups} contestantsNumber={currentHeats?.length} />
+                <NextRoundBlock
+                    round={currentGroup.round}
+                    groupId={currentGroup.id}
+                    groups={groups}
+                    contestantsNumber={currentHeats?.length}
+                    teamType={teamType}
+                    currentGroup={currentGroup}
+                    setSearchParams={setSearchParams}
+                    setNextRound={setNextRound}
+                    modifyGroup={modifyGroup}
+                />
             }
 
             {(nextRound && currentGroup.id && teamType) &&
@@ -188,7 +233,11 @@ const CompetitionControlPage = observer(() => {
                     </div>
                     {currentHeats.map(h =>
                         <div className='d-flex justify-content-between' key={h.id}>
-                            <div><Link to={`/heat/${h.id}`}>{h.order}. {h?.contestant?.name} {h?.contestant?.number>0 && `- ${h.contestant.number}`}</Link></div>
+                            <div><Link to={`/heat/${h.id}`}>{h.order}. {h?.contestant?.name} {h?.contestant?.number>0 && `- ${h.contestant.number}`}</Link>  
+                                <span title='Удалить участника из заезда'
+                                      onClick={(e) => delContestantHeat(h.id)} className="del-mini-btn material-symbols-outlined">
+                                        close
+                                    </span></div>
                             <div className='text-right'>{h.total}</div>
                         </div>
                         )}
@@ -205,14 +254,16 @@ const CompetitionControlPage = observer(() => {
                     {currentTeamHeats.map(cth =>
                         <div key={cth.id}>
                             <div className='header d-flex justify-content-between mb-2 mt-3'>
-                                <div>{cth.order}. {cth?.team?.name}</div>
+                                <div>{cth.order}. {cth?.team?.name} <span title='Удалить команду из заезда' onClick={(e) => delTeamHeat(cth.id)} className="del-mini-btn material-symbols-outlined">
+                                        close
+                                    </span></div>
                                 <div><strong>{cth.total}</strong></div>
                             </div>
                             {cth?.heat?.length>0 &&
                             <div>
                                 {cth.heat.sort((a,b) => a?.contestant?.teamOrder - b?.contestant?.teamOrder).map((h, index) =>
                                     <div className='d-flex justify-content-between' key={h.id}>
-                                        <div><Link to={`/heat/${h.id}`}>{index+1}. {h?.contestant?.name} {h?.contestant?.number>0 && `- ${h.contestant.number}`}</Link></div>
+                                        <div><Link to={`/heat/${h.id}?${searchParams}`}>{index+1}. {h?.contestant?.name} {h?.contestant?.number>0 && `- ${h.contestant.number}`}</Link></div>
                                         <div className='text-right'>{h.total}</div>
                                     </div>
                                 )}

@@ -55,6 +55,20 @@ export const delHeatTrick = async ({id}) => {
     }
 }
 
+export const delCompetitionTeamHeat = async ({teamHeatId}) => {
+    if(window.confirm('Уверены, что хотите удалить команду из заезда?')) {
+        const {data} = await $authHost.delete(`api/heat/team_heat/${teamHeatId}`)
+        return data
+    }
+}
+
+export const delCompetitionContestantHeat = async ({heatId}) => {
+    if(window.confirm('Уверены, что хотите удалить участника из заезда?')) {
+        const {data} = await $authHost.delete(`api/heat/current/${heatId}`)
+        return data
+    }
+}
+
 export const modifyHeatModifier = async ({id, value, trickId}) => {
     const {data} = await $authHost.patch(`api/heat/modifier/${id}`, {value})
     await $authHost.post(`api/heat/calculate_trick/${trickId}`)

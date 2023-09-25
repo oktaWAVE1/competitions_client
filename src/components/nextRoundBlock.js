@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
-import {Dropdown, Form} from "react-bootstrap";
+import {Dropdown} from "react-bootstrap";
 import {addCompetitionNextRoundHeat} from "../http/heatAPI";
 import MyButton from "../UI/MyButton/MyButton";
+import {observer} from "mobx-react-lite";
 
-const NextRoundBlock = ({contestantsNumber, groups, groupId, round}) => {
+const NextRoundBlock = ({contestantsNumber, groups, groupId, round, setSearchParams, setNextRound, modifyGroup, currentGroup, teamType}) => {
     const [contestants, setContestants] = useState({nextRoundNum: 1, nextGroupId: null, nextGroupDescription: '', nextGroupNum: 1});
     const createNextRound = async () => {
+        modifyGroup(currentGroup.id, currentGroup.description, Number(currentGroup.round)+1, currentGroup.status)
+        setNextRound(false)
         await addCompetitionNextRoundHeat({
             groupId: groupId,
             round: round,

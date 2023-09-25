@@ -29,8 +29,6 @@ const HeatTrickList = ({tricks, header, delTrick, modifiers, setRefresh, heatId}
                        <HeatTrickItem heatId={heatId} setRefresh={setRefresh} t={t} delTrick={delTrick} modifiers={modifiers} key={t.id} />
                         )}
 
-
-
                 </div>
             }
 

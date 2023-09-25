@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {
     addHeatTrick,
     calculateHeat,
@@ -29,6 +29,7 @@ const HeatPage = () => {
     const [tricks, setTricks] = useState([]);
     const [sportCategories, setSportCategories] = useState([]);
     const [checkedCategory, setCheckedCategory] = useState(null);
+    const [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
         loading.setLoading(true)
@@ -36,7 +37,8 @@ const HeatPage = () => {
             setHeat(data)
             await fetchCompetitionGroupHeats({groupId: data?.groupId, round: data?.round})
                 .then((heats) => {
-                    setNextId(heats.filter(h => Number(h.order)===Number(data.order)+1)?.[0]?.['id'])
+                    setNextId(heats.filter(h => h.teamHeatId ? h.teamHeatId===data.teamHeatId : h)
+                        .filter(h => Number(h.order)===Number(data.order)+1)?.[0]?.['id'])
                 })
             await fetchAllCompetitionTricks({competitionId: data.competitionId})
                 .then(tricksData => setTricks([...tricksData].filter(t => t.level<=data?.group?.level)))
@@ -98,8 +100,9 @@ const HeatPage = () => {
                     </div>
                 </div>
             </Card>
+            {}
                 <HeatTrickList heatId={heat.id} header='Список сделанных трюков' setRefresh={setRefresh} modifiers={heat?.competition?.competition_modifiers} tricks={heat?.heat_tricks} delTrick={delTrick} />
-            {heat.total &&
+            {!!heat?.total &&
             <div className='mt-3'>
                 <h4>Дополнительные баллы</h4>
                 <Form className='row gap-1'>
@@ -112,8 +115,8 @@ const HeatPage = () => {
             </div>
             }
             {nextId ?
-                <MyButton classes='back-nav-btn' onClick={() => navigate(`/heat/${nextId}`)}>К следующему заезду</MyButton> :
-                <MyButton classes='back-nav-btn' onClick={() => navigate(`/competition_control/${heat?.competitionId}`)}>Назад к сореванованию</MyButton>
+                <MyButton classes='back-nav-btn' onClick={() => navigate(`/heat/${nextId}?${searchParams}`)}>К следующему заезду</MyButton> :
+                <MyButton classes='back-nav-btn' onClick={() => navigate(`/competition_control/${heat?.competitionId}?${searchParams}`)}>Назад к сореванованию</MyButton>
             }
             <MyButton classes='mt-2 w-100' onClick={() => navigate(-1)}>Перейти назад</MyButton>
         </div>
