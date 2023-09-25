@@ -34,6 +34,10 @@ html {
   min-height: 100vh;
 }
 
+img {
+  max-width: 95vw;
+}
+
 
 .App{
   max-width: 100%;
