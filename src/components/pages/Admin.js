@@ -11,6 +11,7 @@ import SportsCategoriesModal from "../modals/SportsCategoriesModal";
 import useDebounce from "../../hooks/useDebounce";
 import UserRolesModal from "../modals/UserRolesModal";
 import {fetchUsers} from "../../http/userAPI";
+import {Helmet} from "react-helmet";
 
 const Admin = observer(() => {
     const [modals, setModals] = useState({competitions: false, competitionsList: false, users: false, sports: false, categories: false, tricks: false})
@@ -48,6 +49,9 @@ const Admin = observer(() => {
             <SportsCategoriesModal setRefresh={setRefresh} sports={sport.sport} onHide={() => setModals({...modals, sports: false})} show={modals.sports} />
             <CompetitionModal users={users} setRefresh={setRefresh} competitions={competition.competition} sports={sport.sport} onHide={() => setModals({...modals, competitions: false})} show={modals.competitions} />
             <CompetitionsListModal competitions={competition.competition} sports={sport.sport} onHide={() => setModals({...modals, competitionsList: false})} show={modals.competitionsList} />
+            <Helmet>
+                <title>Админка | wow-contest.ru</title>
+            </Helmet>
         </Container>
     );
 });

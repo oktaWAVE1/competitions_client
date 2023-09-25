@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {Form, Card, Container, Alert} from "react-bootstrap";
+import {Form, Container, Alert} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
 import {Link, useLocation} from "react-router-dom";
@@ -138,7 +138,7 @@ const Auth = observer(() => {
                 </Form>
             </div>
             <Helmet>
-                <title>Страница аутентефикации | Зоолайнер</title>
+                <title>Страница аутентефикации | wow-contest.ru</title>
             </Helmet>
         </Container>
     );

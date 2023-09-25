@@ -4,6 +4,7 @@ import {Context} from "../../index";
 import {getUser, modifyUser} from "../../http/userAPI";
 import MyButton from "../../UI/MyButton/MyButton";
 import {passwordValidator} from "../../utils/passwordValidator";
+import {Helmet} from "react-helmet";
 
 const UserPage = () => {
     const {user} = useContext(Context)
@@ -109,6 +110,9 @@ const UserPage = () => {
 
                 </Form>
             </Container>
+            <Helmet>
+                <title>Личный кабинет | wow-contest.ru</title>
+            </Helmet>
         </div>
     );
 };

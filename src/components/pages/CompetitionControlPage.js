@@ -17,6 +17,7 @@ import {
 import useDebounce from "../../hooks/useDebounce";
 import NextRoundBlock from "../nextRoundBlock";
 import {fetchCompetitionTeams} from "../../http/contestantAPI";
+import {Helmet} from "react-helmet";
 
 const CompetitionControlPage = observer(() => {
     const {competitionId} = useParams()
@@ -282,7 +283,9 @@ const CompetitionControlPage = observer(() => {
 
                 </div>
             }
-
+            <Helmet>
+                <title>Управление соревнованием | wow-contest.ru</title>
+            </Helmet>
 
         </div>
     );

@@ -9,6 +9,7 @@ import CompetitionTrickList from "../competitionTrickList";
 import CompetitionModifiersList from "../competitionModifiersList";
 import Loader from "../../UI/Loader/Loader";
 import {fetchCompetitionContestants, fetchCompetitionTeams} from "../../http/contestantAPI";
+import {Helmet} from "react-helmet";
 
 const CompetitionPublicPage = observer(() => {
     const {competitionId} = useParams()
@@ -96,7 +97,7 @@ const CompetitionPublicPage = observer(() => {
                                         <Accordion.Body>
                                             {t.contestants.sort((a, b)=> a.teamOrder - b.teamOrder).map(c =>
                                                 <div key={c.id}>
-                                                    <Link to={`/contestant/${c.id}`}><div>{`${c.teamOrder}. ${c.name}` + `${c.number ? ` - ${c.number}` : ''}`}</div></Link>
+                                                    <Link to={`/contestant/${c.id}`}><div>{`${c.teamOrder}. ${c.name}`} {`${c.number && ` - ${c.number}`}`}</div></Link>
                                                 </div>
                                             )}
                                         </Accordion.Body>
@@ -117,7 +118,7 @@ const CompetitionPublicPage = observer(() => {
                                 <Accordion.Body>
                                         {contestants.sort((a, b)=> a.id - b.id).map((c, index) =>
                                             <div key={c.id}>
-                                                <div className='text-center'>{`${index+1}. ${c.name}` + `${c.number ? ` - ${c.number}` : ''}`}</div>
+                                                <div className='text-center'>{`${index+1}. ${c.name}`} {`${c.number && ` - ${c.number}`}`}</div>
                                             </div>
                                         )}
                                 </Accordion.Body>
@@ -143,7 +144,9 @@ const CompetitionPublicPage = observer(() => {
             <div className='d-flex justify-content-end'>
                 <Link className='text-right' to={`/host/${competitionId}`}>Страница ведущего</Link>
             </div>
-
+            <Helmet>
+                <title>{current?.name} | wow-contest.ru</title>
+            </Helmet>
         </div>
     );
 });

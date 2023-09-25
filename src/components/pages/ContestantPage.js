@@ -3,6 +3,7 @@ import {fetchContestant} from "../../http/contestantAPI";
 import {useNavigate, useParams} from "react-router-dom";
 import MyButton from "../../UI/MyButton/MyButton";
 import {Accordion} from "react-bootstrap";
+import {Helmet} from "react-helmet";
 
 const ContestantPage = () => {
     const {id} = useParams()
@@ -90,7 +91,9 @@ const ContestantPage = () => {
 
             </div>
             }
-
+            <Helmet>
+                <title>Страница участника соревнования | wow-contest.ru</title>
+            </Helmet>
         </div>
     );
 };

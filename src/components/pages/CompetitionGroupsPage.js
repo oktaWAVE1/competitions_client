@@ -14,6 +14,7 @@ import {Accordion, Dropdown, Form} from "react-bootstrap";
 import {fetchCompetitionContestants} from "../../http/contestantAPI";
 import {useSearch} from "../../hooks/useSearch";
 import useDebounce from "../../hooks/useDebounce";
+import {Helmet} from "react-helmet";
 
 const CompetitionGroupsPage = () => {
     const {competitionId} = useParams()
@@ -241,7 +242,9 @@ const CompetitionGroupsPage = () => {
                     </div>
                 </div>
             }
-
+            <Helmet>
+                <title>Редактирование групп соревнования | wow-contest.ru</title>
+            </Helmet>
         </div>
     );
 };

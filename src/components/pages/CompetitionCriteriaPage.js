@@ -11,6 +11,7 @@ import Loader from "../../UI/Loader/Loader";
 import MyButton from "../../UI/MyButton/MyButton";
 import {Form} from "react-bootstrap";
 import {Context} from "../../index";
+import {Helmet} from "react-helmet";
 
 const CompetitionCriteriaPage = observer(() => {
 
@@ -182,7 +183,9 @@ const CompetitionCriteriaPage = observer(() => {
 
             </div>
             }
-
+            <Helmet>
+                <title>Редактирование критериев оценки | wow-contest.ru</title>
+            </Helmet>
         </div>
     );
 });

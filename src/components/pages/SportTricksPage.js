@@ -5,6 +5,7 @@ import {Card, Container, Form} from "react-bootstrap";
 import MyButton from "../../UI/MyButton/MyButton";
 import {addCategoryTrick, delCategoryTrick, modifyCategoryTrick} from "../../http/trickAPI";
 import CategoryList from "../categoryList";
+import {Helmet} from "react-helmet";
 
 const SportTricksPage = () => {
     const {id} = useParams()
@@ -166,6 +167,9 @@ const SportTricksPage = () => {
                 }
 
             </Container>
+            <Helmet>
+                <title>Список трюков. {sport?.name} | wow-contest.ru</title>
+            </Helmet>
         </div>
     );
 };

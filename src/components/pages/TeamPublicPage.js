@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {fetchTeam} from "../../http/contestantAPI";
 import MyButton from "../../UI/MyButton/MyButton";
+import {Helmet} from "react-helmet";
 
 const TeamPublicPage = () => {
     const [team, setTeam] = useState({});
@@ -23,7 +24,7 @@ const TeamPublicPage = () => {
 
                             {team.contestants.sort((a, b)=> a.teamOrder - b.teamOrder).map(c =>
                                 <div key={c.id} className='text-center'>
-                                    <Link to={`/contestant/${c.id}`}><div>{`${c.teamOrder}. ${c.name}` + `${c.number ? ` - ${c.number}` : ''}`}</div></Link>
+                                    <Link to={`/contestant/${c.id}`}><div>{`${c.teamOrder}. ${c.name}`} {`${c.number && ` - ${c.number}`}`}</div></Link>
                                 </div>
                             )}
                     <hr />
@@ -42,7 +43,9 @@ const TeamPublicPage = () => {
                 </div>
             }
 
-
+            <Helmet>
+                <title>Страница команды | wow-contest.ru</title>
+            </Helmet>
         </div>
     );
 };

@@ -5,6 +5,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import MyButton from "../../UI/MyButton/MyButton";
 import Loader from "../../UI/Loader/Loader";
 import {fetchGroup} from "../../http/competitionAPI";
+import {Helmet} from "react-helmet";
 
 const GroupPublicPage = observer(() => {
     const {loading} = useContext(Context)
@@ -47,6 +48,9 @@ const GroupPublicPage = observer(() => {
 
 
             <MyButton classes='mt-2 w-100' onClick={() => navigate(-1)}>Перейти назад</MyButton>
+            <Helmet>
+                <title>Страница группы заездов | wow-contest.ru</title>
+            </Helmet>
         </div>
     );
 });

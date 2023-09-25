@@ -3,9 +3,9 @@ import {Link, useParams} from "react-router-dom";
 import {fetchCompetitionGroups, fetchCurrentCompetition} from "../../http/competitionAPI";
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
-import MyButton from "../../UI/MyButton/MyButton";
 import {fetchCompetitionGroupHeats, fetchCompetitionTeamGroupHeats} from "../../http/heatAPI";
 import usePolling from "../../hooks/usePolling";
+import {Helmet} from "react-helmet";
 
 const HostPage = observer(() => {
     const {competitionId} = useParams()
@@ -83,7 +83,9 @@ const HostPage = observer(() => {
                     )}
                 </div>
             }
-
+            <Helmet>
+                <title>Страница ведущего | wow-contest.ru</title>
+            </Helmet>
 
 
         </div>

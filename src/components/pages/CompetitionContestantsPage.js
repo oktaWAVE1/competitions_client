@@ -15,6 +15,7 @@ import {
 } from "../../http/contestantAPI";
 import FullImgModal from "../modals/FullImgModal";
 import {fetchCurrentCompetition} from "../../http/competitionAPI";
+import {Helmet} from "react-helmet";
 
 const CompetitionContestantsPage = observer(() => {
 
@@ -180,7 +181,7 @@ const CompetitionContestantsPage = observer(() => {
                 </div>
                 {teams.map(t =>
                     <div className='team' key={t.id}>
-                        <div className='team-mini-img'>{t.img && <img onClick={() => setImgModal({show: true, img: t.img, path: '/images/teams/'})} src={process.env.REACT_APP_API_URL+`/images/teams/mini/${t.img}`}/>}</div>
+                        <div className='team-mini-img'>{t.img && <img alt='' onClick={() => setImgModal({show: true, img: t.img, path: '/images/teams/'})} src={process.env.REACT_APP_API_URL+`/images/teams/mini/${t.img}`}/>}</div>
                         <div className='team-color' style={{backgroundColor: t.color, width: '40px', height: '30px'}}></div>
                         <div className='team-name'><Form.Check
                             className='d-flex gap-2 align-items-center pl-3'
@@ -209,7 +210,7 @@ const CompetitionContestantsPage = observer(() => {
                                                     className='d-flex gap-2 align-items-center pl-3'
                                                     type='radio'
                                                     value={c.id}
-                                                    label={`${c.teamOrder}. ${c.name}` + `${c.number ? ` - ${c.number}` : ''}`}
+                                                    label={`${c.teamOrder}. ${c.name} ${c.number && ` - ${c.number}`}`}
                                                     onChange={(e) => {
                                                         setCurrentContestant({name: c.name, teamId: c.teamId, teamOrder: c.teamOrder, number: c.number, img: c.img, id: c.id, teamName: t.name})
                                                         setActiveBlock({...activeBlock, newTeam: false})
@@ -271,7 +272,7 @@ const CompetitionContestantsPage = observer(() => {
                                 </div>
                                 {currentTeam.img &&
                                     <div className='d-flex justify-content-center flex-column align-items-center'>
-                                        <img className='change-img'
+                                        <img className='change-img' alt=''
                                              src={process.env.REACT_APP_API_URL + `/images/teams/mini/${currentTeam.img}`}/>
                                         <MyButton onClick={(e) => delTeamImg(e)}>Удалить изображение</MyButton>
                                     </div>
@@ -339,7 +340,7 @@ const CompetitionContestantsPage = observer(() => {
                     </Form>
                     {currentContestant.img &&
                         <div className='d-flex justify-content-center flex-column align-items-center'>
-                            <img className='change-img' src={process.env.REACT_APP_API_URL+`/images/contestants/mini/${currentContestant.img}`} />
+                            <img alt='' className='change-img' src={process.env.REACT_APP_API_URL+`/images/contestants/mini/${currentContestant.img}`} />
                             <MyButton onClick={(e) => delContestantImg(e)}>Удалить изображение</MyButton>
                         </div>
                     }
@@ -385,7 +386,7 @@ const CompetitionContestantsPage = observer(() => {
                                         checked={c.id === currentContestant.id}
                                     /></div>
                                     <div>{c.number > 0 && c.number}</div>
-                                    <div>{c.img && <img onClick={() => setImgModal({show: true, img: c.img, path: '/images/contestants/'})}
+                                    <div>{c.img && <img alt='' onClick={() => setImgModal({show: true, img: c.img, path: '/images/contestants/'})}
                                         src={process.env.REACT_APP_API_URL + `/images/contestants/mini/${c.img}`}/>}</div>
                                     <div>{c.status}</div>
                                 </div>
@@ -397,7 +398,9 @@ const CompetitionContestantsPage = observer(() => {
             }
 
             <FullImgModal onHide={() => setImgModal({...imgModal, show: false})} show={imgModal.show} img={imgModal.img} path={imgModal.path} />
-
+            <Helmet>
+                <title>Участники и команды | wow-contest.ru</title>
+            </Helmet>
         </div>
     );
 });

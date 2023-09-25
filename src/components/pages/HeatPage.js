@@ -16,6 +16,7 @@ import CategoryTrickList from "../categoryTrickList";
 import {Context} from "../../index";
 import useDebounce from "../../hooks/useDebounce";
 import HeatTrickList from "../heatTrickList";
+import {Helmet} from "react-helmet";
 
 const HeatPage = () => {
     const {loading} = useContext(Context)
@@ -119,6 +120,10 @@ const HeatPage = () => {
                 <MyButton classes='back-nav-btn' onClick={() => navigate(`/competition_control/${heat?.competitionId}?${searchParams}`)}>Назад к сореванованию</MyButton>
             }
             <MyButton classes='mt-2 w-100' onClick={() => navigate(-1)}>Перейти назад</MyButton>
+
+            <Helmet>
+                <title>Заезд | wow-contest.ru</title>
+            </Helmet>
         </div>
     );
 };

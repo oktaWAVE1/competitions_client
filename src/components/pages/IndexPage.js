@@ -4,6 +4,7 @@ import {fetchAllCompetitions} from "../../http/competitionAPI";
 import {Context} from "../../index";
 import {Link} from "react-router-dom";
 import Loader from "../../UI/Loader/Loader";
+import {Helmet} from "react-helmet";
 
 const IndexPage = observer(() => {
     const {competition, loading} = useContext(Context)
@@ -26,13 +27,16 @@ const IndexPage = observer(() => {
                             <div><h2>{c?.name}</h2></div>
                             <div><h4>{c?.description}</h4></div>
                             {c?.competition_images?.length>0 &&
-                                <div className='d-flex flex-column align-items-center'><img src={`${process.env.REACT_APP_API_URL}/images/competitions/mini/${c.competition_images[0]['img']}`} /></div>
+                                <div className='d-flex flex-column align-items-center'><img alt='' src={`${process.env.REACT_APP_API_URL}/images/competitions/mini/${c.competition_images[0]['img']}`} /></div>
                             }
                         </Link>
                     </div>
                     )}
             </div>
             }
+            <Helmet>
+                <title>wow-contest.ru</title>
+            </Helmet>
         </div>
     );
 });

@@ -7,13 +7,14 @@ import {
     delCompetitionImg, delCompetitionReferee, editCompetition, fetchCompetitionImages, fetchCompetitionReferees,
     fetchCurrentCompetition
 } from "../../http/competitionAPI";
-import {Card, Container, Dropdown, Form, Row} from "react-bootstrap";
+import {Card, Container, Form, Row} from "react-bootstrap";
 import MyButton from "../../UI/MyButton/MyButton";
 import AddImgModule from "../addImgModule";
 import useDebounce from "../../hooks/useDebounce";
 import Loader from "../../UI/Loader/Loader";
 import {fetchUsers} from "../../http/userAPI";
 import UserSearch from "../userSearch";
+import {Helmet} from "react-helmet";
 
 const CompetitionEditPage = observer(() => {
     const {competitionId} = useParams()
@@ -194,7 +195,7 @@ const CompetitionEditPage = observer(() => {
                                 <div className="gallery">
                                     {competitionImages.map(i =>
                                         <div className="gallery-item" key={i.id}>
-                                            <img loading="lazy" src={process.env.REACT_APP_API_URL+`/images/competitions/mini/${i.img}`} />
+                                            <img alt='' loading="lazy" src={process.env.REACT_APP_API_URL+`/images/competitions/mini/${i.img}`} />
                                             <span title='Удалить изображение' className='del-btn' onClick={(e) => delImg(e, i.id)}><span
                                                 className="material-symbols-outlined">
                                                 delete_forever
@@ -207,7 +208,9 @@ const CompetitionEditPage = observer(() => {
                     </Card>
                 </Row>
                 </div>
-
+                <Helmet>
+                    <title>Редактирование соревнования | wow-contest.ru</title>
+                </Helmet>
             </Container>
 
 

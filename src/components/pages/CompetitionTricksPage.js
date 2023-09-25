@@ -14,6 +14,7 @@ import MyButton from "../../UI/MyButton/MyButton";
 import {fetchAllTricks} from "../../http/trickAPI";
 import {Form} from "react-bootstrap";
 import useDebounce from "../../hooks/useDebounce";
+import {Helmet} from "react-helmet";
 
 const CompetitionTricksPage = observer(() => {
     const {competitionId} = useParams()
@@ -189,6 +190,10 @@ const CompetitionTricksPage = observer(() => {
                 </div>
                 }
             </div>
+
+            <Helmet>
+                <title>Список трюков | wow-contest.ru</title>
+            </Helmet>
 
         </div>
     );
