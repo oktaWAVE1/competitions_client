@@ -32,6 +32,7 @@ const Auth = observer(() => {
                 }
             }
             else{
+                setIsDisabled(true)
                 if (!validate(currentUser.email)){
                     setAlertMessage({message: 'Вы ввели некорректный email', show: true, variant: 'danger'})
                 } else if (currentUser.password!==currentUser.passwordConfirm){
@@ -43,7 +44,7 @@ const Auth = observer(() => {
                                 show: true,
                                 variant: 'success'
                             });
-                            setIsDisabled(true)
+
                         }
                     )
                 }
