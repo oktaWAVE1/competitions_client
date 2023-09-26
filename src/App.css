@@ -454,26 +454,25 @@ textarea, textarea:active, textarea:focus {
 
 @media screen and (max-width: 1000px) {
 
-    .edit-competition .gallery {
+    .gallery {
         column-count: 2;
     }
 }
 
 
 @media screen and (max-width: 770px) {
-
-    .edit-competition .gallery-item img {
-        max-width: 200px;
+    .gallery-item img {
+        max-width: 250px;
     }
 }
 
 @media screen and (max-width: 450px) {
-    .edit-competition .gallery {
+    .gallery {
         column-count: 1;
     }
 
-    .edit-competition .gallery-item img {
-        max-width: 300px;
+   .gallery-item img {
+        max-width: 400px;
     }
 }
 
