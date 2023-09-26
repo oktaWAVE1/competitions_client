@@ -472,7 +472,7 @@ textarea, textarea:active, textarea:focus {
     }
 
    .gallery-item img {
-        max-width: 400px;
+        max-width: 95vw;
     }
 }
 
