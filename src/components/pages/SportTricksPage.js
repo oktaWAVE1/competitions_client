@@ -168,7 +168,7 @@ const SportTricksPage = () => {
 
             </Container>
             <Helmet>
-                <title>Список трюков. {sport?.name} | wow-contest.ru</title>
+                <title>Список трюков. {`${sport?.name}`} | wow-contest.ru</title>
             </Helmet>
         </div>
     );

@@ -76,11 +76,10 @@ export const modifyHeatModifier = async ({id, value, trickId}) => {
     return data
 }
 
-export const calculateHeat = async ({heatId, bonus, bonusDescription, teamHeatId}) => {
+export const calculateHeat = async ({heatId, bonus, teamId, bonusDescription, teamHeatId}) => {
     const {data} = await $authHost.post(`api/heat/calculate_heat/${heatId}`, {bonus, bonusDescription})
-        console.log(teamHeatId)
-    if (teamHeatId) {
-        await $authHost.post(`api/heat/calculate_team_heat/${teamHeatId}`)
+    if (teamHeatId && teamId) {
+        await $authHost.post(`api/heat/calculate_team_heat/${teamHeatId}`, {teamId})
     }
     return data
 }

@@ -130,7 +130,7 @@ const CompetitionControlPage = observer(() => {
             <h1>Управление соревнованием. {competition.currentCompetition?.name}.</h1>
             {competition.currentCompetition?.teamType &&
             <Form>
-                <Form.Switch checked={teamType} onChange={() => handleTeamTypeSwitch()} label='Командный режим' />
+                <Form.Switch disabled={!currentGroup.id} checked={teamType} onChange={() => handleTeamTypeSwitch()} label='Командный режим' />
             </Form>
             }
             {groups?.length>0 &&

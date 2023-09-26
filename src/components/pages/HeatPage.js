@@ -37,7 +37,7 @@ const HeatPage = () => {
             setHeat(data)
             await fetchCompetitionGroupHeats({groupId: data?.groupId, round: data?.round})
                 .then((heats) => {
-                    setNextId(heats.filter(h => h.teamHeatId ? h.teamHeatId===data.teamHeatId : h)
+                    setNextId(heats.filter(h => h.teamHeatId===data.teamHeatId)
                         .filter(h => Number(h.order)===Number(data.order)+1)?.[0]?.['id'])
                 })
             await fetchAllCompetitionTricks({competitionId: data.competitionId})
@@ -60,11 +60,15 @@ const HeatPage = () => {
     }, 300, [tricks]);
 
     useDebounce(async () => {
-        if(bonus.bonus) {await calculateHeat({heatId, bonus: bonus.bonus, teamHeatId: heat?.teamHeatId, bonusDescription: (bonus.bonusDescription || heat.bonusDescription)}).then(() => setRefresh(prev => prev + 1))}
+        if(bonus.bonus) {await calculateHeat({heatId, bonus: bonus.bonus, teamId: heat?.contestant?.teamId, teamHeatId: heat?.teamHeatId, bonusDescription: (bonus.bonusDescription || heat.bonusDescription)})
+            .then(async () =>
+                await fetchCurrentHeat({id: heatId}).then((data) => setHeat(data)))}
     }, 2000, [bonus])
 
-    useDebounce(async () => await calculateHeat({heatId, teamHeatId: heat?.teamHeatId}).then(async () =>
-        await fetchCurrentHeat({id: heatId}).then((data) => setHeat(data))), 200, [refresh])
+    useDebounce(async () =>{
+        console.log(heat?.contestant?.teamId)
+    await calculateHeat({heatId, teamHeatId: heat?.teamHeatId, teamId: heat?.contestant?.teamId}).then(async () =>
+        await fetchCurrentHeat({id: heatId}).then((data) => setHeat(data)))}, 200, [refresh])
 
     const addTrick = async (basePoints, modifiers, total, competitionTrickId) => {
         await addHeatTrick({

@@ -19,7 +19,6 @@ const CompetitionModal = ({onHide, show, competitions, sports, setRefresh, users
             const formData = new FormData()
             for (const [key, value] of Object.entries(competition)) {
                 formData.append(`${key}`, `${value}`)
-                console.log(key + '' + value)
             }
             if (file){
             formData.append('file', file[0])

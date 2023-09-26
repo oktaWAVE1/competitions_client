@@ -440,15 +440,15 @@ textarea, textarea:active, textarea:focus {
 
 @media screen and (min-width: 1200px) {
 
-    .edit-competition .gallery img{
+    .gallery img{
         width: var(--mini-img-width);
     }
 }
 
 @media screen and (max-width: 1200px) {
 
-    .edit-competition .gallery img{
-        width: 300px;
+    .gallery img{
+        max-width: 30vw;
     }
 }
 
@@ -457,12 +457,9 @@ textarea, textarea:active, textarea:focus {
     .gallery {
         column-count: 2;
     }
-}
-
-
-@media screen and (max-width: 770px) {
     .gallery-item img {
-        max-width: 250px;
+        width: 47vw;
+        max-width: 47vw;
     }
 }
 
@@ -471,8 +468,14 @@ textarea, textarea:active, textarea:focus {
         column-count: 1;
     }
 
+    .gallery-item {
+        display: flex;
+        justify-content: center;
+    }
+
    .gallery-item img {
-        max-width: 95vw;
+       max-width: 88vw;
+       width: 88vw;
     }
 }
 
