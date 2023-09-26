@@ -97,7 +97,7 @@ const CompetitionPublicPage = observer(() => {
                                         <Accordion.Body>
                                             {t.contestants.sort((a, b)=> a.teamOrder - b.teamOrder).map(c =>
                                                 <div key={c.id}>
-                                                    <Link to={`/contestant/${c.id}`}><div>{`${c.teamOrder}. ${c.name}`} {`${c.number && ` - ${c.number}`}`}</div></Link>
+                                                    <Link to={`/contestant/${c.id}`}><div>{`${c.teamOrder}. ${c.name}`} {`${c.number>0 ? ` - ${c.number}` : ''}`}</div></Link>
                                                 </div>
                                             )}
                                         </Accordion.Body>
@@ -118,7 +118,7 @@ const CompetitionPublicPage = observer(() => {
                                 <Accordion.Body>
                                         {contestants.sort((a, b)=> a.id - b.id).map((c, index) =>
                                             <div key={c.id}>
-                                                <div className='text-center'>{`${index+1}. ${c.name}`} {`${c.number && ` - ${c.number}`}`}</div>
+                                                <div className='text-center'>{`${index+1}. ${c.name}`} {`${c.number>0 ? ` - ${c.number}` : ''}`}</div>
                                             </div>
                                         )}
                                 </Accordion.Body>

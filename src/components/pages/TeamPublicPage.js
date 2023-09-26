@@ -24,7 +24,7 @@ const TeamPublicPage = () => {
 
                             {team.contestants.sort((a, b)=> a.teamOrder - b.teamOrder).map(c =>
                                 <div key={c.id} className='text-center'>
-                                    <Link to={`/contestant/${c.id}`}><div>{`${c.teamOrder}. ${c.name}`} {`${c.number && ` - ${c.number}`}`}</div></Link>
+                                    <Link to={`/contestant/${c.id}`}><div>{`${c.teamOrder}. ${c.name}`} {`${c.number>0 ? ` - ${c.number}` : ''}`}</div></Link>
                                 </div>
                             )}
                     <hr />

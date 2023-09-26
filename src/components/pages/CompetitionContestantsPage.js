@@ -210,7 +210,7 @@ const CompetitionContestantsPage = observer(() => {
                                                     className='d-flex gap-2 align-items-center pl-3'
                                                     type='radio'
                                                     value={c.id}
-                                                    label={`${c.teamOrder}. ${c.name} ${c.number && ` - ${c.number}`}`}
+                                                    label={`${c.teamOrder}. ${c.name} ${c.number>0 ? ` - ${c.number}` : ''}`}
                                                     onChange={(e) => {
                                                         setCurrentContestant({name: c.name, teamId: c.teamId, teamOrder: c.teamOrder, number: c.number, img: c.img, id: c.id, teamName: t.name})
                                                         setActiveBlock({...activeBlock, newTeam: false})
