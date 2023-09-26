@@ -416,22 +416,22 @@ textarea, textarea:active, textarea:focus {
 .edit-competition .del-btn {
     position: absolute;
     top: 5px;
-    right: 25px;
+    left: 15px;
 }
-
-.edit-competition .gallery  {
+.gallery  {
     max-width: 100%;
     margin: 0 auto;
     column-count: 3;
 }
 
-.edit-competition .gallery-item {
+.gallery-item {
     break-inside: avoid;
     margin-bottom: 16px;
     position: relative;
+    cursor: pointer;
 }
 
-.edit-competition .gallery-item img {
+.gallery-item img {
     border-radius: 8px;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
 

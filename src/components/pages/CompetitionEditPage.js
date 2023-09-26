@@ -57,6 +57,7 @@ const CompetitionEditPage = observer(() => {
     }
 
     const addImg = async (e) => {
+        loading.setLoading(true)
         e.preventDefault()
         try {
             for (let i =0; i<= file.length; i++){
@@ -66,6 +67,7 @@ const CompetitionEditPage = observer(() => {
                 await addCompetitionImg(formData)
             }
                 setFile(null)
+
             loading.setRefresh(prev => prev + 1)
 
         } catch (e) {
