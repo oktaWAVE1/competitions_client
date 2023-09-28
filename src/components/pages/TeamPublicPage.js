@@ -16,6 +16,11 @@ const TeamPublicPage = () => {
         <div className='w-100 p-2'>
             <MyButton classes='mt-2 w-100' onClick={() => navigate(-1)}>Перейти назад</MyButton>
             <h3>Команда: {team?.name}</h3>
+            {team?.img &&
+                <div className='d-flex justify-content-center'>
+                    <img className='rounded' alt='' src={process.env.REACT_APP_API_URL+`/images/teams/mini/${team?.img}`} />
+                </div>
+            }
             <h3>Сумма баллов команды: <strong>{team?.team_result?.total}</strong></h3>
             {team?.contestants?.length>0 &&
                 <div>

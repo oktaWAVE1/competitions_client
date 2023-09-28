@@ -19,6 +19,11 @@ const ContestantPage = () => {
             <MyButton classes='mt-2 w-100' onClick={() => navigate(-1)}>Перейти назад</MyButton>
 
             <h1>{contestant?.name}.{contestant?.number>0 && ` Номер - ${contestant.number}`}</h1>
+            {contestant.img &&
+            <div className='d-flex justify-content-center'>
+                <img className='rounded' alt='' src={process.env.REACT_APP_API_URL+`/images/contestants/mini/${contestant?.img}`} />
+            </div>
+            }
             <hr/>
             <h3>Всего баллов за соревнование: {contestant?.contestant_result?.total}</h3>
             {contestant?.heat?.length>0 &&
