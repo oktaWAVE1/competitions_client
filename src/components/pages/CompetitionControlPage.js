@@ -238,7 +238,7 @@ const CompetitionControlPage = observer(() => {
                                       onClick={(e) => delContestantHeat(h.id)} className="del-mini-btn material-symbols-outlined">
                                         close
                                     </span></div>
-                            <div className='text-right'>{h.total}</div>
+                            <div className='text-right'>{h.total.toFixed(1)}</div>
                         </div>
                         )}
                 </div>
@@ -257,14 +257,14 @@ const CompetitionControlPage = observer(() => {
                                 <div>{cth.order}. {cth?.team?.name} <span title='Удалить команду из заезда' onClick={(e) => delTeamHeat(cth.id)} className="del-mini-btn material-symbols-outlined">
                                         close
                                     </span></div>
-                                <div><strong>{cth.total}</strong></div>
+                                <div><strong>{cth.total.toFixed(1)}</strong></div>
                             </div>
                             {cth?.heat?.length>0 &&
                             <div>
                                 {cth.heat.sort((a,b) => a?.contestant?.teamOrder - b?.contestant?.teamOrder).map((h, index) =>
                                     <div className='d-flex justify-content-between' key={h.id}>
                                         <div><Link to={`/heat/${h.id}?${searchParams}`}>{index+1}. {h?.contestant?.name} {h?.contestant?.number>0 && `- ${h.contestant.number}`}</Link></div>
-                                        <div className='text-right'>{h.total}</div>
+                                        <div className='text-right'>{h.total.toFixed(1)}</div>
                                     </div>
                                 )}
                             </div>

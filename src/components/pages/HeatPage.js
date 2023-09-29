@@ -33,6 +33,7 @@ const HeatPage = () => {
 
     useEffect(() => {
         loading.setLoading(true)
+        setBonus({bonus: '', bonusDescription: ''})
         fetchCurrentHeat({id: heatId}).then(async (data) => {
             setHeat(data)
             await fetchCompetitionGroupHeats({groupId: data?.groupId, round: data?.round})
@@ -66,7 +67,6 @@ const HeatPage = () => {
     }, 2000, [bonus])
 
     useDebounce(async () =>{
-        console.log(heat?.contestant?.teamId)
     await calculateHeat({heatId, teamHeatId: heat?.teamHeatId, teamId: heat?.contestant?.teamId}).then(async () =>
         await fetchCurrentHeat({id: heatId}).then((data) => setHeat(data)))}, 200, [refresh])
 

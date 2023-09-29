@@ -7,18 +7,20 @@
         navigator.serviceWorker.register('%PUBLIC_URL%/service-worker.js', {
           scope: '/'
         }).then(function (registration) {
-          // Registration was successful
-
           console.log('pwa: ServiceWorker registration successful with scope: ', registration.scope);
-
         }, function (err) {
-          // registration failed :(
-
           console.log('pwa: ServiceWorker registration failed: ', err);
-
         });
+          const requestNotificationPermission = async () => {
+              const permission = await window.Notification.requestPermission()
+              if (permission !== 'granted') {
+                  throw new Error('Permission not granted for Notification')
+              }
+          }
+          requestNotificationPermission()
       }
     </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js" integrity="sha512-3dZ9wIrMMij8rOH7X3kLfXAzwtcHpuYpEgQg1OA4QAob1e81H8ntUQmQm3pBudqIoySO5j0tHN4ENzA6+n2r4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <base href="%PUBLIC_URL%" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,6 +77,7 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+
     <div id="root"></div>
 
   </body>
