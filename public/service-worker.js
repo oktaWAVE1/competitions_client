@@ -22,7 +22,7 @@ const showLocalNotification = (title, body, swRegistration) => {
 const saveSubscription = async (subscription) => {
 
 
-    const SERVER_URL = `http://localhost:5000/api/notification`
+    const SERVER_URL = `https://wow-contest/server/api/notification`
     const response = await fetch(SERVER_URL, {
         method: 'post',
         headers: {
