@@ -41,7 +41,7 @@ const TeamPublicPage = () => {
 
                     {team.team_heats.sort((a,b) => a.round - b.round).map(th =>
                         <div key={th.id}>
-                            <div>Раунд: {th.round}. Сумма баллов за заезд: <strong>{th?.total?.total?.toFixed(1)}</strong>. {th.bonus>0 && `(В том числе бонус: ${th.bonus}. ${th.bonusDescription})`}</div>
+                            <div>Раунд: {th.round}. Сумма баллов за заезд: <strong>{th?.total?.toFixed(1)}</strong>. {th.bonus>0 && `(В том числе бонус: ${th.bonus}. ${th.bonusDescription})`}</div>
                         </div>
                         )}
 
