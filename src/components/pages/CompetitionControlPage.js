@@ -6,7 +6,7 @@ import {fetchCompetitionGroups, fetchCurrentCompetition, modifyCompetitionGroup}
 import {Dropdown, Form} from "react-bootstrap";
 import MyButton from "../../UI/MyButton/MyButton";
 import {
-    addCompetitionFirstGroupHeats,
+    addCompetitionFirstGroupHeats, addCompetitionGroupHeat,
     addCompetitionTeamHeats,
     addCompetitionTeamNextRoundHeat,
     delCompetitionContestantHeat,
@@ -16,22 +16,25 @@ import {
 } from "../../http/heatAPI";
 import useDebounce from "../../hooks/useDebounce";
 import NextRoundBlock from "../nextRoundBlock";
-import {fetchCompetitionTeams} from "../../http/contestantAPI";
+import {fetchCompetitionContestants, fetchCompetitionTeams} from "../../http/contestantAPI";
 import {Helmet} from "react-helmet";
 
 const CompetitionControlPage = observer(() => {
     const {competitionId} = useParams()
-    const {competition, loading} = useContext(Context)
+    const {competition, loading, user} = useContext(Context)
     const [teamType, setTeamType] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams()
     const [groups, setGroups] = useState([]);
     const [addTeams, setAddTeams] = useState(false);
+    const [addContestants, setAddContestants] = useState(false);
     const [updGroup, setUpdGroup] = useState(1);
     const rounds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const statuses = ['Ожидание', 'В процессе', 'Пауза', 'Завершено']
     const [currentHeats, setCurrentHeats] = useState([]);
     const [currentTeam, setCurrentTeam] = useState({name: '', id: ''});
+    const [currentContestant, setCurrentContestant] = useState({name: '', id: ''});
     const [currentTeamHeats, setCurrentTeamHeats] = useState([]);
+    const [contestants, setContestants] = useState([]);
     const [teams, setTeams] = useState([]);
     const [nextRound, setNextRound] = useState(false);
     const [currentGroup, setCurrentGroup] = useState({description: '', round: '', status: '', id: ''});
@@ -42,9 +45,11 @@ const CompetitionControlPage = observer(() => {
         fetchCompetitionGroups({competitionId}).then((data) => setGroups([...data].sort((a,b) => a.id - b.id)))
         fetchCurrentCompetition(competitionId).then((data) => competition.setCurrentCompetition(data))
         fetchCompetitionTeams({competitionId}).then((data) => setTeams(data))
+        fetchCompetitionContestants({competitionId}).then((data) => setContestants(data))
         if (currentGroup.id) {
             fetchCompetitionGroupHeats({groupId: currentGroup.id, round: currentGroup.round}).then((data) => setCurrentHeats([...data].sort((a, b) => a.order - b.order)))
         }
+
         if (currentGroup.id && teamType) {
             fetchCompetitionTeamGroupHeats({groupId: currentGroup.id, round: currentGroup.round}).then((data) => {
                 setCurrentTeamHeats([...data].sort((a, b) => a.order -b.order))
@@ -95,6 +100,17 @@ const CompetitionControlPage = observer(() => {
         }).then(() => loading.setRefresh(prev => prev + 1))
     }
 
+    const addGroupHeats = async () => {
+        let order = 1 + (currentHeats?.length || 0)
+        await addCompetitionGroupHeat({
+            competitionId: competitionId,
+            contestantId: currentContestant.id,
+            round: currentGroup.round,
+            groupId: currentGroup.id,
+            order: order
+        }).then(() => loading.setRefresh(prev => prev + 1))
+    }
+
     const delTeamHeat = async (teamHeatId) => {
         await delCompetitionTeamHeat({teamHeatId}).then(() => loading.setRefresh(prev => prev + 1))
     }
@@ -125,7 +141,7 @@ const CompetitionControlPage = observer(() => {
     }
 
     return (
-        <div className='competition-control w-100 p-2 d-flex flex-column align-items-center'>
+        <fieldset disabled={user?.user?.role!=='ADMIN' && Number(user?.user?.id)!==Number(competition?.currentCompetition?.adminId)} className='competition-control w-100 p-2 d-flex flex-column align-items-center'>
             <MyButton classes='back-nav-btn' onClick={() => navigate(`/edit_competition/${competitionId}`)}>Назад к сореванованию</MyButton>
             <h1>Управление соревнованием. {competition.currentCompetition?.name}.</h1>
             {competition.currentCompetition?.teamType &&
@@ -222,9 +238,28 @@ const CompetitionControlPage = observer(() => {
                 <MyButton disabled={!currentGroup.id || !currentTeam.id  || !currentGroup.round} onClick={() => addTeamGroupHeats()} classes='mt-2 w-100'>Создать список заездов для команды</MyButton>
             </div>
             }
+            {!teamType && currentGroup.id &&
+                <Form>
+                    <Form.Switch checked={addContestants} onChange={() => setAddContestants(prev => !prev)} label='Добавить участников' />
+                </Form>
+            }
+            {!teamType && addContestants &&
+                <div>
+                    <h4>Добавить участника в заезд:</h4>
+                    <Dropdown className="col-sm d-flex justify-content-center">
+                        <Dropdown.Toggle className='round'>{currentContestant?.name ? currentContestant?.name : 'Выберите участника'}</Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {contestants.map(c =>
+                                <Dropdown.Item onClick={() => setCurrentContestant({id: c.id, name: c.name})} title={c.name} key={c.id}>{c.name} </Dropdown.Item>
+                            )}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <MyButton disabled={!currentGroup.id || !currentContestant.id  || !currentGroup.round} onClick={() => addGroupHeats()} classes='mt-2 w-100'>Добавить в заезд</MyButton>
+                </div>
+            }
 
 
-            {currentHeats.length>0 && !teamType &&
+                {currentHeats.length>0 && !teamType &&
                 <div className='group-list mt-3'>
                     <h4>Список заездов:</h4>
                     <div className='header d-flex justify-content-between mb-2'>
@@ -238,7 +273,7 @@ const CompetitionControlPage = observer(() => {
                                       onClick={(e) => delContestantHeat(h.id)} className="del-mini-btn material-symbols-outlined">
                                         close
                                     </span></div>
-                            <div className='text-right'>{h.total.toFixed(1)}</div>
+                            <div className='text-right'>{h?.total?.toFixed(1)}</div>
                         </div>
                         )}
                 </div>
@@ -257,14 +292,14 @@ const CompetitionControlPage = observer(() => {
                                 <div>{cth.order}. {cth?.team?.name} <span title='Удалить команду из заезда' onClick={(e) => delTeamHeat(cth.id)} className="del-mini-btn material-symbols-outlined">
                                         close
                                     </span></div>
-                                <div><strong>{cth.total.toFixed(1)}</strong></div>
+                                <div><strong>{cth?.total?.toFixed(1)}</strong></div>
                             </div>
                             {cth?.heat?.length>0 &&
                             <div>
                                 {cth.heat.sort((a,b) => a?.contestant?.teamOrder - b?.contestant?.teamOrder).map((h, index) =>
                                     <div className='d-flex justify-content-between' key={h.id}>
                                         <div><Link to={`/heat/${h.id}?${searchParams}`}>{index+1}. {h?.contestant?.name} {h?.contestant?.number>0 && `- ${h.contestant.number}`}</Link></div>
-                                        <div className='text-right'>{h.total.toFixed(1)}</div>
+                                        <div className='text-right'>{h?.total?.toFixed(1)}</div>
                                     </div>
                                 )}
                             </div>
@@ -287,7 +322,7 @@ const CompetitionControlPage = observer(() => {
                 <title>Управление соревнованием | wow-contest.ru</title>
             </Helmet>
 
-        </div>
+        </fieldset>
     );
 });
 

@@ -40,6 +40,9 @@ const MyNavbar = observer(() => {
                                 {user.user.role === 'ADMIN' &&
                                     <NavLink onClick={hideMobileMenu} className={cl.navbarItem} to='/admin'>Админ</NavLink>
                                 }
+                                {user.user.role === 'MODERATOR' &&
+                                    <NavLink onClick={hideMobileMenu} className={cl.navbarItem} to='/moderator'>Соревнования</NavLink>
+                                }
                                 <NavLink onClick={hideMobileMenu} className={cl.navbarItem} to='/user'>Аккаунт</NavLink>
                                 <div onClick={() => logout()} className={[cl.logout_btn, cl.navbarItem].join(" ")}>Выйти</div>
 

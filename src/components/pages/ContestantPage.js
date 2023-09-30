@@ -25,7 +25,7 @@ const ContestantPage = () => {
             </div>
             }
             <hr/>
-            <h3>Всего баллов за соревнование: {contestant?.contestant_result?.total.toFixed(2)}</h3>
+            <h3>Всего баллов за соревнование: {contestant?.contestant_result?.total?.toFixed(2)}</h3>
             {contestant?.heat?.length>0 &&
             <div>
                 <hr />
@@ -63,13 +63,13 @@ const ContestantPage = () => {
 
                                                     <Accordion className='' flush>
                                                         <Accordion.Item eventKey={h.id+ht.id}>
-                                                            <Accordion.Header>{ht?.modifiers.toFixed(1)}</Accordion.Header>
+                                                            <Accordion.Header>{ht?.modifiers?.toFixed(1)}</Accordion.Header>
                                                             <Accordion.Body className='show'>
                                                                 {ht?.heat_trick_modifiers?.length>0 &&
                                                                 <div>
                                                                     {ht?.heat_trick_modifiers.sort((a,b)=> a.id-b.id).map(htm =>
                                                                         <div key={h.id+ht.id+htm.id}>
-                                                                            <div>{htm?.competition_modifier?.name}: {htm?.value.toFixed(1)}</div>
+                                                                            <div>{htm?.competition_modifier?.name}: {htm?.value?.toFixed(1)}</div>
 
                                                                         </div>
                                                                         )}
@@ -81,7 +81,7 @@ const ContestantPage = () => {
                                                     </Accordion>
 
                                                 </div>
-                                                <div className='text-center'><strong>{ht?.total.toFixed(1)}</strong></div>
+                                                <div className='text-center'><strong>{ht?.total?.toFixed(1)}</strong></div>
 
                                             </div>
                                         )}

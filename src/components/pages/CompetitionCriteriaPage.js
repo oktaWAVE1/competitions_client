@@ -16,7 +16,7 @@ import {Helmet} from "react-helmet";
 const CompetitionCriteriaPage = observer(() => {
 
     const {competitionId} = useParams()
-    const {loading} = useContext(Context)
+    const {loading, user, competition} = useContext(Context)
     const [oneMoreModifier, setOneMoreModifier] = useState(false);
     const [checked, setChecked] = useState();
     const [newModifier, setNewModifier] = useState({name: '', description: '', multiplier: false, min:'', max:'', defaultValue: '', order: ''});
@@ -75,7 +75,7 @@ const CompetitionCriteriaPage = observer(() => {
     }
     return (
 
-        <div className='w-100 p-2'>
+        <fieldset disabled={user?.user?.role!=='ADMIN' && Number(user?.user?.id)!==Number(competition?.currentCompetition?.adminId)} className='w-100 p-2'>
             <MyButton classes='back-nav-btn' onClick={() => navigate(`/edit_competition/${competitionId}`)}>Назад к сореванованию</MyButton>
             <h1>Критерии оценки соревнования.</h1>
             <div>
@@ -186,7 +186,7 @@ const CompetitionCriteriaPage = observer(() => {
             <Helmet>
                 <title>Редактирование критериев оценки | wow-contest.ru</title>
             </Helmet>
-        </div>
+        </fieldset>
     );
 });
 

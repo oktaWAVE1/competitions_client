@@ -5,6 +5,11 @@ export const addCompetitionFirstGroupHeats = async ({groupId, round}) => {
     const {data} = await $authHost.post(`api/heat/group/`, {groupId, round})
     return data
 }
+
+export const addCompetitionGroupHeat = async ({order, round, contestantId, competitionId, groupId}) => {
+    const {data} = await $authHost.post(`api/heat/`, {order, round, contestantId, competitionId, groupId})
+    return data
+}
 export const addCompetitionTeamHeats = async ({teamId, order, round, groupId}) => {
     const {data} = await $authHost.post(`api/heat/team_heat/`, {teamId, order, round, groupId})
     return data

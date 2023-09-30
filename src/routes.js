@@ -16,6 +16,7 @@ import ContestantPage from "./components/pages/ContestantPage";
 import CompetitionPublicPage from "./components/pages/competitionPublicPage";
 import TeamPublicPage from "./components/pages/TeamPublicPage";
 import GroupPublicPage from "./components/pages/GroupPublicPage";
+import ModeratorPage from "./components/pages/moderatorPage";
 
 
 
@@ -42,10 +43,8 @@ export const authRoutes = [
     {path: '/group/:groupId', element: <GroupPublicPage />},
 ]
 
-export const adminRoutes = [
-    {path: '/admin', element: <Admin/>},
+export const moderatorRoutes = [
     {path: '/edit_competition/:competitionId', element: <CompetitionEditPage/>},
-    {path: '/sport_tricks/:id', element: <SportTricksPage/>},
     {path: '/competition_tricks/:competitionId', element: <CompetitionTricksPage/>},
     {path: '/competition_criteria/:competitionId', element: <CompetitionCriteriaPage/>},
     {path: '/competition_teams/:competitionId', element: <CompetitionContestantsPage/>},
@@ -53,6 +52,10 @@ export const adminRoutes = [
     {path: '/competition_groups/:competitionId', element: <CompetitionGroupsPage/>},
     {path: '/competition_control/:competitionId', element: <CompetitionControlPage/>},
     {path: '/heat/:heatId', element: <HeatPage/>},
+    {path: '/moderator', element: <ModeratorPage/>},
+]
 
-
+export const adminRoutes = [
+    {path: '/admin', element: <Admin/>},
+    {path: '/sport_tricks/:id', element: <SportTricksPage/>},
 ]

@@ -23,7 +23,7 @@ const CompetitionContestantsPage = observer(() => {
     const [imgModal, setImgModal] = useState({show: false, img: '', path: ''});
     const navigate = useNavigate()
     const {competitionId} = useParams()
-    const {competition, loading} = useContext(Context)
+    const {competition, loading, user} = useContext(Context)
     const [teams, setTeams] = useState([]);
     const [contestants, setContestants] = useState([]);
     const [currentTeam, setCurrentTeam] = useState({name: '', color: '#FFFFFF', img: '', id: '' });
@@ -164,7 +164,7 @@ const CompetitionContestantsPage = observer(() => {
         return <Loader />
     }
     return (
-        <div className='w-100 p-2'>
+        <fieldset disabled={user?.user?.role!=='ADMIN' && Number(user?.user?.id)!==Number(competition?.currentCompetition?.adminId)} className='w-100 p-2'>
             <MyButton classes='back-nav-btn' onClick={() => navigate(`/edit_competition/${competitionId}`)}>Назад к сореванованию</MyButton>
             {isTeamType ?
             <h2>Редактировать команды и участников соревнования. {competition?.currentCompetition?.name}</h2> :
@@ -401,7 +401,7 @@ const CompetitionContestantsPage = observer(() => {
             <Helmet>
                 <title>Участники и команды | wow-contest.ru</title>
             </Helmet>
-        </div>
+        </fieldset>
     );
 });
 

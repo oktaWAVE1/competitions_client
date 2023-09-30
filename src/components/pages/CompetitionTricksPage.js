@@ -18,7 +18,7 @@ import {Helmet} from "react-helmet";
 
 const CompetitionTricksPage = observer(() => {
     const {competitionId} = useParams()
-    const {competition, loading} = useContext(Context)
+    const {competition, loading, user} = useContext(Context)
     const navigate = useNavigate()
     const [addTricks, setAddTricks] = useState(false);
     const [refresh, setRefresh] = useState(1);
@@ -83,11 +83,12 @@ const CompetitionTricksPage = observer(() => {
         await delAllCompetitionTricks({competitionId}).then(() => setRefresh(prev => prev + 1)).then(() => setRefresh(prev => prev + 1))
     }
 
+
     if(loading.loading){
         return <Loader />
     }
     return (
-        <div className='w-100'>
+        <fieldset disabled={user?.user?.role!=='ADMIN' && Number(user?.user?.id)!==Number(competition?.currentCompetition?.adminId)} className='w-100'>
             <MyButton classes='back-nav-btn' onClick={() => navigate(`/edit_competition/${competitionId}`)}>Назад к сореванованию</MyButton>
             <h1>Список трюков</h1>
             <h3>{competition?.currentCompetition?.name}</h3>
@@ -195,7 +196,7 @@ const CompetitionTricksPage = observer(() => {
                 <title>Список трюков | wow-contest.ru</title>
             </Helmet>
 
-        </div>
+        </fieldset>
     );
 });
 

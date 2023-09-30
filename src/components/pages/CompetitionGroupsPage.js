@@ -18,7 +18,7 @@ import {Helmet} from "react-helmet";
 
 const CompetitionGroupsPage = () => {
     const {competitionId} = useParams()
-    const {competition, loading} = useContext(Context)
+    const {competition, loading, user} = useContext(Context)
     const [refresh, setRefresh] = useState(1);
     const [groups, setGroups] = useState([]);
     const [query, setQuery] = useState('');
@@ -92,7 +92,7 @@ const CompetitionGroupsPage = () => {
         return <Loader />
     }
     return (
-        <div className='w-100 p-2 competition-groups-list'>
+        <fieldset disabled={user?.user?.role!=='ADMIN' && Number(user?.user?.id)!==Number(competition?.currentCompetition?.adminId)} className='w-100 p-2 competition-groups-list'>
             <MyButton classes='back-nav-btn' onClick={() => navigate(`/edit_competition/${competitionId}`)}>Назад к сореванованию</MyButton>
                 <h2>Редактировать группы и их участников. {competition?.currentCompetition?.name}</h2>
             <div className='d-flex flex-row justify-content-center gap-3 m-3'>
@@ -214,10 +214,12 @@ const CompetitionGroupsPage = () => {
                                     <div className='text-center'>{g.level}</div>
                                     <div className='text-center'>{g.status}</div>
                                     <div className='d-flex align-items-center'>
-                                        <span title='Удалить категорию' onClick={() => delGroup(g.id)}
-                                              className="del-mini-btn material-symbols-outlined">
+                                        {(user.user.role === 'ADMIN' || user.user.id === competition.currentCompetition.adminId) &&
+                                            <span title='Удалить категорию' onClick={() => delGroup(g.id)}
+                                                  className="del-mini-btn material-symbols-outlined">
                                                                                                     close
                                                     </span>
+                                        }
                                     </div>
                                     <Accordion className='mt-0 w-100' defaultActiveKey={g.id} flush>
                                         <Accordion.Item eventKey={g.id}>
@@ -245,7 +247,7 @@ const CompetitionGroupsPage = () => {
             <Helmet>
                 <title>Редактирование групп соревнования | wow-contest.ru</title>
             </Helmet>
-        </div>
+        </fieldset>
     );
 };
 

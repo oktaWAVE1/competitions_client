@@ -19,7 +19,7 @@ import HeatTrickList from "../heatTrickList";
 import {Helmet} from "react-helmet";
 
 const HeatPage = () => {
-    const {loading} = useContext(Context)
+    const {loading, competition, user} = useContext(Context)
     const {heatId} = useParams()
     const [nextId, setNextId] = useState(null);
     const navigate = useNavigate()
@@ -91,7 +91,7 @@ const HeatPage = () => {
     }
 
     return (
-        <div className='w-100 p-3 heat-page'>
+        <fieldset disabled={user?.user?.role!=='ADMIN' && Number(user?.user?.id)!==Number(competition?.currentCompetition?.adminId)} className='w-100 p-3 heat-page'>
             <MyButton classes='back-nav-btn' onClick={() => navigate(-1)}>Назад</MyButton>
             <h2>Заезд. Раунд {heat?.round}. Участник: {heat?.contestant?.name}{heat?.contestant?.number>0 && ` - ${heat.contestant.number}`}.</h2>
             <Card className='p-2 mb-3'>
@@ -116,7 +116,7 @@ const HeatPage = () => {
                 </Form>
 
                 <h1 className='mt-3'>Итого баллов:</h1>
-                <h1 className='header'>{(heat.total).toFixed(1)}</h1>
+                <h1 className='header'>{(heat.total)?.toFixed(1)}</h1>
             </div>
             }
             {nextId ?
@@ -128,7 +128,7 @@ const HeatPage = () => {
             <Helmet>
                 <title>Заезд | wow-contest.ru</title>
             </Helmet>
-        </div>
+        </fieldset>
     );
 };
 

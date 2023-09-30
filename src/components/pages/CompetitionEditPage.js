@@ -18,7 +18,7 @@ import {Helmet} from "react-helmet";
 
 const CompetitionEditPage = observer(() => {
     const {competitionId} = useParams()
-    const {loading} = useContext(Context)
+    const {loading, user} = useContext(Context)
     const [delConfirm, setDelConfirm] = useState(false);
     const [file, setFile] = useState(null);
     const [referees, setReferees] = useState([]);
@@ -111,21 +111,26 @@ const CompetitionEditPage = observer(() => {
     return (
             <Container className="w-100 edit-competition">
                 <MyButton classes='back-nav-btn' onClick={() => navigate(`/admin`)}>Назад в админку</MyButton>
-                <h1>Внести изменения в соревнование:</h1>
-                <div className="w-100">
+                {(user.user.role !== 'ADMIN' || Number(user.user.id) !== Number(current.adminId)) ?
+                <h1>Нет прав на редактирование {current?.name}</h1> :
+                <h1>Внести изменения в соревнование {current?.name}:</h1>
+                }
+                <fieldset disabled={user.user.role!=='ADMIN' && Number(user.user.id)!==Number(current.adminId)} className="w-100">
                 <Row >
                     <Card className="p-3 mb-3 gap-2 d-flex">
                         <div className="d-flex justify-content-between">
                             <div>Спорт: {current?.sport?.name}</div>
-                            <div>
-                                <Form>
-                                    <Form.Switch checked={delConfirm} onChange={() => setDelConfirm(prev => !prev)} label='Удалить соревнование'/>
-                                    {delConfirm &&
-                                        <MyButton  onClick={e => delContest(e)}>Удалить соревнование</MyButton>
-                                    }
-                                </Form>
+                            {user.user.role==='ADMIN' &&
+                                <div>
+                                    <Form>
+                                        <Form.Switch checked={delConfirm} onChange={() => setDelConfirm(prev => !prev)} label='Удалить соревнование'/>
+                                        {delConfirm &&
+                                            <MyButton  onClick={e => delContest(e)}>Удалить соревнование</MyButton>
+                                        }
+                                    </Form>
 
-                            </div>
+                                </div>
+                            }
                         </div>
                         <Form className="d-flex flex-column gap-2">
                         <MyButton classes="w-100" onClick={(e) => editContest(e)}>Сохранить изменения</MyButton>
@@ -136,19 +141,23 @@ const CompetitionEditPage = observer(() => {
                                 <span className={`${current.teamType ? 'active' : ''}`}>Командное</span>
                             </div>
                         </Form>
-                        <h5>Администратор:</h5>
-                        {users.filter(u => u.id===current.adminId)?.[0]?.['name']}
-                        <UserSearch
-                            name='adminName'
-                            id='adminId'
-                            user={current}
-                            setUser={setCurrent}
-                            users={users}
-                            placeholder='Поиск администратора'
-                            label='Сменить администратора'
-                            dropdownLabel = 'Выберите администратора'
-                            anyrole={false}
-                            roles={['ADMIN', 'MODERATOR', 'REFEREE']} />
+                        {user.user.role === 'ADMIN' &&
+                            <div>
+                                <h5>Администратор:</h5>
+                                {users.filter(u => u.id === current.adminId)?.[0]?.['name']}
+                                <UserSearch
+                                    name='adminName'
+                                    id='adminId'
+                                    user={current}
+                                    setUser={setCurrent}
+                                    users={users}
+                                    placeholder='Поиск администратора'
+                                    label='Сменить администратора'
+                                    dropdownLabel='Выберите администратора'
+                                    anyrole={false}
+                                    roles={['ADMIN', 'MODERATOR', 'REFEREE']}/>
+                            </div>
+                        }
 
                             <h5>Список судей:</h5>
                         <UserSearch
@@ -198,10 +207,13 @@ const CompetitionEditPage = observer(() => {
                                     {competitionImages.map(i =>
                                         <div className="gallery-item" key={i.id}>
                                             <img alt='' loading="lazy" src={process.env.REACT_APP_API_URL+`/images/competitions/mini/${i.img}`} />
-                                            <span title='Удалить изображение' className='del-btn' onClick={(e) => delImg(e, i.id)}><span
-                                                className="material-symbols-outlined">
+                                            {(user.user.role === 'ADMIN' || Number(user.user.id) === Number(current.adminId)) &&
+                                                <span title='Удалить изображение' className='del-btn'
+                                                      onClick={(e) => delImg(e, i.id)}><span
+                                                    className="material-symbols-outlined">
                                                 delete_forever
                                                 </span></span>
+                                            }
                                         </div>
                                     )}
                                 </div>
@@ -209,7 +221,7 @@ const CompetitionEditPage = observer(() => {
                         }
                     </Card>
                 </Row>
-                </div>
+                </fieldset>
                 <Helmet>
                     <title>Редактирование соревнования | wow-contest.ru</title>
                 </Helmet>
