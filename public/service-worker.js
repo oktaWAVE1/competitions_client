@@ -14,18 +14,18 @@ const showLocalNotification = (title, body, swRegistration) => {
         body,
         icon: 'sw.png',
         vibrate: [100, 100, 200]
-        // here you can add more properties like icon, image, vibrate, etc.
     }
     swRegistration.showNotification(title, options)
 }
 
-const saveSubscription = async (subscription) => {
+const saveSubscription = async (subscription, token) => {
 
-
-    const SERVER_URL = `https://wow-contest/server/api/notification`
+    // const SERVER_URL = `https://wow-contest/server/api/notification`
+    console.log(123)
     const response = await fetch(SERVER_URL, {
         method: 'post',
         headers: {
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(subscription),

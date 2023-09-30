@@ -24,7 +24,7 @@ const FullImgModal = ({img, onHide, show, path}) => {
             <Modal.Body>
                 <div className='d-flex justify-content-center'>
                     {img &&
-                        <img className='full-img' src={process.env.REACT_APP_API_URL+`${path}${img}`}/>
+                        <img alt='' className='full-img' src={process.env.REACT_APP_API_URL+`${path}${img}`}/>
                     }
                 </div>
 

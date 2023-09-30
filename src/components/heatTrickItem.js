@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Form} from "react-bootstrap";
 import useDebounce from "../hooks/useDebounce";
 import {calculateHeat, modifyHeatModifier} from "../http/heatAPI";

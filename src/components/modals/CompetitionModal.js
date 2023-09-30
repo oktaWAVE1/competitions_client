@@ -1,9 +1,7 @@
 import {Dropdown, Form, Modal} from "react-bootstrap";
 import MyButton from "../../UI/MyButton/MyButton";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {createCompetition} from "../../http/competitionAPI";
-import {fetchUsers} from "../../http/userAPI";
-import {useUserSearch} from "../../hooks/useUserSearch";
 import AddImgModule from "../addImgModule";
 import UserSearch from "../userSearch";
 

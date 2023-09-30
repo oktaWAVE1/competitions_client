@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {Alert, Card, Container, Form} from "react-bootstrap";
+import {Alert, Container, Form} from "react-bootstrap";
 import MyButton from "../../UI/MyButton/MyButton";
 import {userResetPass, userResetPassMail} from "../../http/userAPI";
 import {Helmet} from "react-helmet";

@@ -1,5 +1,4 @@
 import React from 'react';
-import MyButton from "../UI/MyButton/MyButton";
 import HeatTrickItem from "./heatTrickItem";
 
 const HeatTrickList = ({tricks, header, delTrick, modifiers, setRefresh, heatId}) => {

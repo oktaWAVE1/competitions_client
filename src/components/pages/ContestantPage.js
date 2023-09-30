@@ -25,7 +25,7 @@ const ContestantPage = () => {
             </div>
             }
             <hr/>
-            <h3>Всего баллов за соревнование: {contestant?.contestant_result?.total}</h3>
+            <h3>Всего баллов за соревнование: {contestant?.contestant_result?.total.toFixed(2)}</h3>
             {contestant?.heat?.length>0 &&
             <div>
                 <hr />

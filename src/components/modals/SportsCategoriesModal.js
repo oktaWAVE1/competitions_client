@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
-import {Accordion, Card, Form, Modal, Row} from "react-bootstrap";
+import {Accordion, Card, Form, Modal} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import MyButton from "../../UI/MyButton/MyButton";
 import {useSearch} from "../../hooks/useSearch";
 import {addCategory, addSport, deleteCategory, deleteSport, modifySport} from "../../http/sportAPI";
-import Loader from "../../UI/Loader/Loader";
 
 const SportsCategoriesModal = ({onHide, show, sports, setRefresh} ) => {
     const [query, setQuery] = useState('');
