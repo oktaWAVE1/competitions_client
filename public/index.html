@@ -8,16 +8,16 @@
           console.log('Permission not granted for Notification')
         }
       }
-      requestNotificationPermission()
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('%PUBLIC_URL%/service-worker.js', {
-          scope: '/'
-        }).then(function (registration) {
-          console.log('pwa: ServiceWorker registration successful with scope: ', registration.scope);
-        }, function (err) {
-          console.log('pwa: ServiceWorker registration failed: ', err);
-        });
-      }
+      // requestNotificationPermission()
+      // if ('serviceWorker' in navigator) {
+      //   navigator.serviceWorker.register('%PUBLIC_URL%/service-worker.js', {
+      //     scope: '/'
+      //   }).then(function (registration) {
+      //     console.log('pwa: ServiceWorker registration successful with scope: ', registration.scope);
+      //   }, function (err) {
+      //     console.log('pwa: ServiceWorker registration failed: ', err);
+      //   });
+      // }
 
 
     </script>
@@ -74,6 +74,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Сервис проведения фристайл соревнований для любых экстремальных видов спорта." />
 
   </head>
   <body>
